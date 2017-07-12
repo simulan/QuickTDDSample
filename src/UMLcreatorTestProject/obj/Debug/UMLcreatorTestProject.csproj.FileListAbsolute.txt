@@ -7,3 +7,6 @@ C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTest
 C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTestProject\obj\Debug\UMLcreatorTestProject.csprojResolveAssemblyReference.cache
 C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTestProject\obj\Debug\UMLcreatorTestProject.dll
 C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTestProject\obj\Debug\UMLcreatorTestProject.pdb
+C:\Work\My CSharp\UMLcreator\src\UMLcreatorTestProject\obj\Debug\UMLcreatorTestProject.csprojResolveAssemblyReference.cache
+C:\Work\My CSharp\UMLcreator\src\UMLcreatorTestProject\obj\Debug\UMLcreatorTestProject.dll
+C:\Work\My CSharp\UMLcreator\src\UMLcreatorTestProject\obj\Debug\UMLcreatorTestProject.pdb
