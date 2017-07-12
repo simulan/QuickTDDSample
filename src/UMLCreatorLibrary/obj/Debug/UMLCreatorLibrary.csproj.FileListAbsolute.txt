@@ -1,0 +1,10 @@
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\UMLCreatorLibrary\bin\Debug\UMLCreatorLibrary.dll
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\UMLCreatorLibrary\bin\Debug\UMLCreatorLibrary.pdb
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\UMLCreatorLibrary\obj\Debug\UMLCreatorLibrary.csprojResolveAssemblyReference.cache
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\UMLCreatorLibrary\obj\Debug\UMLCreatorLibrary.dll
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\UMLCreatorLibrary\obj\Debug\UMLCreatorLibrary.pdb
+C:\Work\My CSharp\UMLcreator\src\UMLCreatorLibrary\bin\Debug\UMLCreatorLibrary.dll
+C:\Work\My CSharp\UMLcreator\src\UMLCreatorLibrary\bin\Debug\UMLCreatorLibrary.pdb
+C:\Work\My CSharp\UMLcreator\src\UMLCreatorLibrary\obj\Debug\UMLCreatorLibrary.csprojResolveAssemblyReference.cache
+C:\Work\My CSharp\UMLcreator\src\UMLCreatorLibrary\obj\Debug\UMLCreatorLibrary.dll
+C:\Work\My CSharp\UMLcreator\src\UMLCreatorLibrary\obj\Debug\UMLCreatorLibrary.pdb

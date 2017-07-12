@@ -1,0 +1,9 @@
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTestProject\bin\Debug\UMLcreatorTestProject.dll
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTestProject\bin\Debug\UMLcreatorTestProject.pdb
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTestProject\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTestProject\bin\Debug\UMLCreatorLibrary.dll
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTestProject\bin\Debug\UMLCreatorLibrary.pdb
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTestProject\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTestProject\obj\Debug\UMLcreatorTestProject.csprojResolveAssemblyReference.cache
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTestProject\obj\Debug\UMLcreatorTestProject.dll
+C:\Users\vdb\Documents\Visual Studio 2015\Projects\UMLcreator\src\UMLcreatorTestProject\obj\Debug\UMLcreatorTestProject.pdb
