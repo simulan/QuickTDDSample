@@ -16,8 +16,8 @@ namespace UMLcreator.models
             Methods = new List<Method>();
         }
 
-        public void AddMethod(String umlMethodNotation) {
-            Methods.Add(new Method(umlMethodNotation));
+        public void AddMethod(Method addition) {
+            Methods.Add(addition);
         }
     }
 }

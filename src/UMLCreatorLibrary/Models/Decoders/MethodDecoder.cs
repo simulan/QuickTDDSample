@@ -14,25 +14,21 @@ namespace UMLCreatorLibrary.Models.Decoders {
         private const char PARAMETER_START_DELIMITER = '(';
         private const char PARAMETER_END_DELIMITER = ')';
 
-        public AccessScope AccessModifier { get; private set; }
-        public string Name { get; private set; }
-        public List<Argument> Parameters { get; private set; }
-        public string ReturnType { get; private set; }
-
-        public MethodDecoder(String input) {
-            this.input = input;
+        public MethodDecoder() {
         }
-       
-        public void Decode() {
+
+        public Method Decode(String input) {
+            this.input = input;
             int typeDelimiterIndex = FindLastIndexOrThrowError(TYPE_DELIMITER);
             int parameterStartDelimiterIndex = FindIndexOrThrowError(PARAMETER_START_DELIMITER);
             int parameterEndDelimiterIndex = FindIndexOrThrowError(PARAMETER_END_DELIMITER);
             throwIfInvalidDelimiters(typeDelimiterIndex, parameterStartDelimiterIndex, parameterEndDelimiterIndex);
 
-            DecodeAccessModifier(input[0]);
-            DecodeName(input, parameterStartDelimiterIndex);
-            DecodeParameters(input, parameterStartDelimiterIndex, parameterEndDelimiterIndex);
-            DecodeReturnType(input, typeDelimiterIndex);
+            return new Method(
+                DecodeAccessModifier(input[0]),
+                DecodeName(input, parameterStartDelimiterIndex),
+                DecodeParameters(input, parameterStartDelimiterIndex, parameterEndDelimiterIndex),
+                DecodeReturnType(input, typeDelimiterIndex));
         }
         private void throwIfInvalidDelimiters(int typeDelimiterIndex, int parameterStartDelimiterIndex, int parameterEndDelimiterIndex) {
             if (typeDelimiterIndex < parameterEndDelimiterIndex) {
@@ -63,23 +59,21 @@ namespace UMLCreatorLibrary.Models.Decoders {
             if (indexOf == -1) throw new FormatException("'" + c + "' character expected in " + input);
             return indexOf;
         }
-        private void DecodeAccessModifier(char c) {
+        private AccessScope DecodeAccessModifier(char c) {
             switch (c) {
-                case ACCESS_PUBLIC: AccessModifier = AccessScope.PUBLIC;
-                    break;
-                case ACCESS_PROTECTED: AccessModifier = AccessScope.PUBLIC;
-                    break;
-                case ACCESS_PRIVATE: AccessModifier = AccessScope.PUBLIC;
-                    break;
+                case ACCESS_PUBLIC: return AccessScope.PUBLIC;
+                case ACCESS_PROTECTED: return AccessScope.PUBLIC;
+                case ACCESS_PRIVATE: return AccessScope.PUBLIC;
                 default: throw new NotImplementedException("There is no access modifier such as '" + c + "'");
             }
         }
-        private void DecodeName(string input, int indexFirstParenthesis) {
+        private String DecodeName(string input, int indexFirstParenthesis) {
             const int PREFIX_OFFSET = 1;
             int argsLength = input.Length - indexFirstParenthesis;
-            Name = input.Substring(PREFIX_OFFSET, input.Length - argsLength - PREFIX_OFFSET).Replace(" ", "");
+            string name = input.Substring(PREFIX_OFFSET, input.Length - argsLength - PREFIX_OFFSET);
+            return name.Replace(" ", "");
         }
-        private void DecodeParameters(string input, int indexFirstParenthesis, int indexLastParenthesis) {
+        private List<Argument> DecodeParameters(string input, int indexFirstParenthesis, int indexLastParenthesis) {
             const int SINGLE_OFFSET = 1;
             List<Argument> decodedParameters = new List<Argument>();
             String argumentsInput = input.Substring(indexFirstParenthesis + SINGLE_OFFSET, indexLastParenthesis - indexFirstParenthesis - SINGLE_OFFSET);
@@ -88,7 +82,7 @@ namespace UMLCreatorLibrary.Models.Decoders {
                     decodedParameters.Add(DecodeParameter(part));
                 }
             }
-            Parameters = decodedParameters;
+            return decodedParameters;
         }
         private Argument DecodeParameter(string input) {
             Argument arg = new Argument();
@@ -100,12 +94,10 @@ namespace UMLCreatorLibrary.Models.Decoders {
             } else {
                 throw new NotImplementedException("Parameters should have name & returntype, properly delimited");
             }
+        }
+        private string DecodeReturnType(string input, int indexColon) {
+            return input.Substring(indexColon + 1).Replace(" ", "");
+        }
 
-        }
-        private void DecodeReturnType(string input, int indexColon) {
-            const int NEXT_OFFSET = 1;
-            ReturnType = input.Substring(indexColon + NEXT_OFFSET).Replace(" ", "");
-        }
-        
     }
 }
