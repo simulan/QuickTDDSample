@@ -15,10 +15,10 @@ namespace UMLcreatorTestProject {
         public void testGetFunctions() {
             const string NAME = "name";
             Diagram diagram = new Diagram(NAME);
-            diagram.AddFunction("+GetPropertyA : int");
-            diagram.AddFunction("-SetPropertyA : void");
-            diagram.AddFunction("+DoSomething : void");
-            Assert.IsNotNull(diagram.GetFunctions());
+            diagram.AddMethod("+GetPropertyA : int");
+            diagram.AddMethod("-SetPropertyA : void");
+            diagram.AddMethod("+DoSomething : void");
+            Assert.IsNotNull(diagram.GetMethods());
         }
     }
 }
