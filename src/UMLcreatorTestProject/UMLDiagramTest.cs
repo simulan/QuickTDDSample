@@ -25,6 +25,76 @@ namespace UMLcreatorTestProject {
             Assert.IsTrue(diagram.Methods != null && diagram.Methods.Count != 0);
         }
         [TestMethod]
+        public void testAddMethodShouldThrowExceptionWhenInvalidAccessModifier() {
+            const string NAME = "name";
+            Diagram diagram = new Diagram(NAME);
+            MethodDecoder decoder = new MethodDecoder();
+            try {
+                diagram.AddMethod(decoder.Decode("func(var:type):void"));
+                Assert.Inconclusive("Should've thrown exception");
+            } catch (AssertInconclusiveException exception) {
+                Assert.Fail(exception.Message);
+            } catch (Exception) {
+                Assert.IsTrue(true);
+            }
+        }
+        [TestMethod]
+        public void testAddMethodShouldThrowExceptionWhenInvalidName() {
+            const string NAME = "name";
+            Diagram diagram = new Diagram(NAME);
+            MethodDecoder decoder = new MethodDecoder();
+            try {
+                diagram.AddMethod(decoder.Decode("++(var:type):void"));
+                Assert.Inconclusive("Should've thrown exception");
+            } catch (AssertInconclusiveException exception) {
+                Assert.Fail(exception.Message);
+            } catch (Exception) {
+                Assert.IsTrue(true);
+            }
+        }
+        [TestMethod]
+        public void testGetMethodsShouldThrowExceptionWhenNoName() {
+            const string NAME = "name";
+            Diagram diagram = new Diagram(NAME);
+            MethodDecoder decoder = new MethodDecoder();
+            try {
+                diagram.AddMethod(decoder.Decode("+(var:type):void"));
+                Assert.Inconclusive("Should've thrown exception");
+            } catch (AssertInconclusiveException exception) {
+                Assert.Fail(exception.Message);
+            } catch (Exception) {
+                Assert.IsTrue(true);
+            }
+        }
+        [TestMethod]
+        public void testGetMethodsShouldThrowExceptionWhenNoParameterName() {
+            const string NAME = "name";
+            Diagram diagram = new Diagram(NAME);
+            MethodDecoder decoder = new MethodDecoder();
+            try {
+                diagram.AddMethod(decoder.Decode("+(:type):void"));
+                Assert.Inconclusive("Should've thrown exception");
+            } catch (AssertInconclusiveException exception) {
+                Assert.Fail(exception.Message);
+            } catch (Exception) {
+                Assert.IsTrue(true);
+            }
+        }
+        [TestMethod]
+        public void testGetMethodsShouldThrowExceptionWhenNoParameterType() {
+            const string NAME = "name";
+            Diagram diagram = new Diagram(NAME);
+            MethodDecoder decoder = new MethodDecoder();
+            try {
+                diagram.AddMethod(decoder.Decode("+(var:):void"));
+                Assert.Inconclusive("Should've thrown exception");
+            } catch (AssertInconclusiveException exception) {
+                Assert.Fail(exception.Message);
+            } catch (Exception) {
+                Assert.IsTrue(true);
+            }
+        }
+        [TestMethod]
         public void testGetMethodProperties() {
             const string NAME = "name";
             Diagram diagram = new Diagram(NAME);
@@ -43,5 +113,6 @@ namespace UMLcreatorTestProject {
             Assert.IsNotNull(methods[3].Parameters);
             Assert.IsTrue(methods[4].Parameters.Count==2);
         }
+
     }
 }
