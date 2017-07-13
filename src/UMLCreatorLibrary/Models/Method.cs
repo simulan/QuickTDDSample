@@ -19,7 +19,7 @@ namespace UMLCreatorLibrary.Models {
      * 
      */
     public class Method {
-        public AccessModifierType AccessModifier { get; private set; }
+        public AccessScope AccessModifier { get; private set; }
         public string Name { get;private set; }
         public string ReturnType { get; private set; }
 
@@ -32,13 +32,13 @@ namespace UMLCreatorLibrary.Models {
             if (indexColon == -1) throw new FormatException("Every method should have a return type seperated by a colon, try ':void' if method returns nothing");
             AccessModifier = DecodeAccessModifier(input[0]);
             Name = DecodeName(input, indexColon);
-
+            ReturnType = DecodeReturnType(input, indexColon);
         }
-        private AccessModifierType DecodeAccessModifier(char c) {
+        private AccessScope DecodeAccessModifier(char c) {
             switch (c) {
-                case '+': return AccessModifierType.PUBLIC;
-                case '#': return AccessModifierType.PROTECTED;
-                case '-': return AccessModifierType.PRIVATE;
+                case '+': return AccessScope.PUBLIC;
+                case '#': return AccessScope.PROTECTED;
+                case '-': return AccessScope.PRIVATE;
                 default: throw new NotImplementedException("There is no AccessModifier defined with "+c+", try {+,-,#} prefix");
             }
         }
@@ -53,7 +53,7 @@ namespace UMLCreatorLibrary.Models {
             return returnType.Replace(" ", "");
         }
 
-        public enum AccessModifierType {
+        public enum AccessScope {
             PUBLIC, PROTECTED, PRIVATE
         }
     }

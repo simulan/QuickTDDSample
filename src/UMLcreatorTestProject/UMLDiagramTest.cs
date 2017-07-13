@@ -18,7 +18,7 @@ namespace UMLcreatorTestProject {
             diagram.AddMethod("+GetPropertyA : int");
             diagram.AddMethod("-SetPropertyA : void");
             diagram.AddMethod("+DoSomething : void");
-            Assert.IsNotNull(diagram.GetMethods());
+            Assert.IsTrue(diagram.Methods != null && diagram.Methods.Count != 0);
         }
     }
 }
