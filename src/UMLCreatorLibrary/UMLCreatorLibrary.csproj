@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Models\AccessScope.cs" />
     <Compile Include="Models\Argument.cs" />
+    <Compile Include="Models\Decoders\MethodDecoder.cs" />
     <Compile Include="Models\Diagram.cs" />
     <Compile Include="Models\Method.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
