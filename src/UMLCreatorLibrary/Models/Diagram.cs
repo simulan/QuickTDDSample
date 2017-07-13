@@ -9,7 +9,7 @@ namespace UMLcreator.models
     public class Diagram
     {
         public string Name { get; private set; }
-        public ICollection<Method> Methods { get;private set; }
+        public List<Method> Methods { get;private set; }
 
         public Diagram(String name) {
             Name = name;

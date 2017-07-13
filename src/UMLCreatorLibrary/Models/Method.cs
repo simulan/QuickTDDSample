@@ -52,9 +52,5 @@ namespace UMLCreatorLibrary.Models {
             string returnType = input.Substring(indexColon + NEXT_OFFSET);
             return returnType.Replace(" ", "");
         }
-
-        public enum AccessScope {
-            PUBLIC, PROTECTED, PRIVATE
-        }
     }
 }
