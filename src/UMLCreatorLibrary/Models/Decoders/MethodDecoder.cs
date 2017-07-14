@@ -61,6 +61,7 @@ namespace UMLCreatorLibrary.Models.Decoders {
             if (indexOf == -1) throw new FormatException("'" + c + "' character expected in " + input);
             return indexOf;
         }
+
         private AccessScope DecodeAccessModifier() {
             switch (input[0]) {
                 case ACCESS_PUBLIC: return AccessScope.PUBLIC;
@@ -99,8 +100,12 @@ namespace UMLCreatorLibrary.Models.Decoders {
                 String variableType = parts[1].Trim();
                 if (variableName.Equals("")) {
                     throw new FormatException("Argument name not specified");
+                } else if (!IsAlpha(variableName)) {
+                    throw new FormatException(String.Format("Argument name contains non-alpha characters '{0}'",variableName));
                 } else if(variableType.Equals("")) {
-                    throw new FormatException("Agument type not specified");
+                     throw new FormatException("Agument type not specified");
+                } else if (!IsAlpha(variableType)) {
+                    throw new FormatException(String.Format("Agument type contains non-alpha characters '{0}'",variableType));
                 } else {
                     arg.Name = parts[0];
                     arg.ReturnType = parts[1];
