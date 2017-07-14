@@ -18,23 +18,22 @@ namespace UMLcreatorTestProject {
         public void testGetMethods() {
             const string NAME = "name";
             Diagram diagram = new Diagram(NAME);
-            MethodDecoder decoder = new MethodDecoder();
-            diagram.AddMethod(decoder.Decode("+GetPropertyA() : int"));
-            diagram.AddMethod(decoder.Decode("-SetPropertyA() : void"));
-            diagram.AddMethod(decoder.Decode("+DoSomething() : void"));
+            UML uml = new UML();
+            diagram.AddMethod(uml.Deserialize<Method>("+GetPropertyA() : int"));
+            diagram.AddMethod(uml.Deserialize<Method>("-SetPropertyA() : void"));
+            diagram.AddMethod(uml.Deserialize<Method>("+DoSomething() : void"));
             Assert.IsTrue(diagram.Methods != null && diagram.Methods.Count != 0);
         }
         [TestMethod]
         public void testGetMethodProperties() {
             const string NAME = "name";
             Diagram diagram = new Diagram(NAME);
-            MethodDecoder decoder = new MethodDecoder();
-
-            diagram.AddMethod(decoder.Decode("+GetPropertyA() : int"));
-            diagram.AddMethod(decoder.Decode("-SetPropertyA() : void"));
-            diagram.AddMethod(decoder.Decode("+DoSomething() : void"));
-            diagram.AddMethod(decoder.Decode("+DoSomething2(amount:Int) : void"));
-            diagram.AddMethod(decoder.Decode("#DoSomething3(number:Int, flag:Boolean) : void"));
+            UML uml = new UML();
+            diagram.AddMethod(uml.Deserialize<Method>("+GetPropertyA() : int"));
+            diagram.AddMethod(uml.Deserialize<Method>("-SetPropertyA() : void"));
+            diagram.AddMethod(uml.Deserialize<Method>("+DoSomething() : void"));
+            diagram.AddMethod(uml.Deserialize<Method>("+DoSomething2(amount:Int) : void"));
+            diagram.AddMethod(uml.Deserialize<Method>("#DoSomething3(number:Int, flag:Boolean) : void"));
 
             List<Method> methods = diagram.Methods;
             Assert.IsFalse(methods[0].AccessModifier.Equals(AccessScope.PRIVATE));
@@ -46,9 +45,9 @@ namespace UMLcreatorTestProject {
 
         [TestMethod]
         public void testAddMethodShouldThrowExceptionWhenInvalidAccessModifier() {
-            MethodDecoder decoder = new MethodDecoder();
+            UML uml = new UML();
             try {
-                decoder.Decode("func(var:type):void");
+                uml.Deserialize<Method>("func(var:type):void");
                 Assert.Inconclusive("Should've thrown exception");
             } catch (AssertInconclusiveException exception) {
                 Assert.Fail(exception.Message);
@@ -58,9 +57,9 @@ namespace UMLcreatorTestProject {
         }
         [TestMethod]
         public void testAddMethodShouldThrowExceptionWhenInvalidName() {
-            MethodDecoder decoder = new MethodDecoder();
+            UML uml = new UML();
             try {
-                decoder.Decode("++(var:type):void");
+                uml.Deserialize<Method>("++(var:type):void");
                 Assert.Inconclusive("Should've thrown exception");
             } catch (AssertInconclusiveException exception) {
                 Assert.Fail(exception.Message);
@@ -70,21 +69,21 @@ namespace UMLcreatorTestProject {
         }
         [TestMethod]
         public void testAddMethodShouldThrowExceptionWhenInvalidParameterName() {
-            MethodDecoder decoder = new MethodDecoder();
+            UML uml = new UML();
             try {
-                decoder.Decode("+abc(+:type):void");
+                uml.Deserialize<Method>("+abc(+:type):void");
                 Assert.Inconclusive("Should've thrown exception");
-            } catch (AssertInconclusiveException exception) {
+            }catch (AssertInconclusiveException exception) {
                 Assert.Fail(exception.Message);
-            } catch (Exception) {
+            }catch (Exception e) {
                 Assert.IsTrue(true);
             }
         }
         [TestMethod]
         public void testAddMethodShouldThrowExceptionWhenInvalidParameterType() {
-            MethodDecoder decoder = new MethodDecoder();
+            UML uml = new UML();
             try {
-                decoder.Decode("+abc(var:??):void");
+                uml.Deserialize<Method>("+abc(var:??):void");
                 Assert.Inconclusive("Should've thrown exception");
             } catch (AssertInconclusiveException exception) {
                 Assert.Fail(exception.Message);
@@ -92,14 +91,25 @@ namespace UMLcreatorTestProject {
                 Assert.IsTrue(true);
             }
         }
-
+        [TestMethod]
+        public void testAddMethodShouldThrowExceptionWhenInvalidReturnType() {
+            UML uml = new UML();
+            try {
+                uml.Deserialize<Method>("+abc(var:type):€€");
+                Assert.Inconclusive("Should've thrown exception");
+            } catch (AssertInconclusiveException exception) {
+                Assert.Fail(exception.Message);
+            } catch (Exception) {
+                Assert.IsTrue(true);
+            }
+        }
         [TestMethod]
         public void testGetMethodsShouldThrowExceptionWhenNoName() {
             const string NAME = "name";
             Diagram diagram = new Diagram(NAME);
-            MethodDecoder decoder = new MethodDecoder();
+            UML uml = new UML();
             try {
-                diagram.AddMethod(decoder.Decode("+(var:type):void"));
+                diagram.AddMethod(uml.Deserialize<Method>("+(var:type):void"));
                 Assert.Inconclusive("Should've thrown exception");
             } catch (AssertInconclusiveException exception) {
                 Assert.Fail(exception.Message);
@@ -111,9 +121,9 @@ namespace UMLcreatorTestProject {
         public void testGetMethodsShouldThrowExceptionWhenNoParameterName() {
             const string NAME = "name";
             Diagram diagram = new Diagram(NAME);
-            MethodDecoder decoder = new MethodDecoder();
+            UML uml = new UML();
             try {
-                diagram.AddMethod(decoder.Decode("+(:type):void"));
+                diagram.AddMethod(uml.Deserialize<Method>("+(:type):void"));
                 Assert.Inconclusive("Should've thrown exception");
             } catch (AssertInconclusiveException exception) {
                 Assert.Fail(exception.Message);
@@ -125,9 +135,9 @@ namespace UMLcreatorTestProject {
         public void testGetMethodsShouldThrowExceptionWhenNoParameterType() {
             const string NAME = "name";
             Diagram diagram = new Diagram(NAME);
-            MethodDecoder decoder = new MethodDecoder();
+            UML uml = new UML();
             try {
-                diagram.AddMethod(decoder.Decode("+(var:):void"));
+                diagram.AddMethod(uml.Deserialize<Method>("+(var:):void"));
                 Assert.Inconclusive("Should've thrown exception");
             } catch (AssertInconclusiveException exception) {
                 Assert.Fail(exception.Message);

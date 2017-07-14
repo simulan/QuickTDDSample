@@ -42,7 +42,12 @@
   <ItemGroup>
     <Compile Include="Models\AccessScope.cs" />
     <Compile Include="Models\Argument.cs" />
-    <Compile Include="Models\Decoders\MethodDecoder.cs" />
+    <Compile Include="Models\Decoders\ArgumentSerializer.cs" />
+    <Compile Include="Models\Decoders\Internals.cs" />
+    <Compile Include="Models\Decoders\TypeAdapterChain.cs" />
+    <Compile Include="Models\Decoders\MethodSerializer.cs" />
+    <Compile Include="Models\Decoders\TypeAdapter.cs" />
+    <Compile Include="Models\Decoders\UML.cs" />
     <Compile Include="Models\Diagram.cs" />
     <Compile Include="Models\Method.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
