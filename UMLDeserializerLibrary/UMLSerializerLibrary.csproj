@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{142D0B3A-526B-4FA1-90AE-82FE9CDFD9C0}</ProjectGuid>
+    <ProjectGuid>{C13860E2-D47C-4AAD-84E0-00D81D424452}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UMLCreatorLibrary</RootNamespace>
-    <AssemblyName>UMLCreatorLibrary</AssemblyName>
+    <RootNamespace>UMLDeserializerLibrary</RootNamespace>
+    <AssemblyName>UMLDeserializerLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,18 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\AccessScope.cs" />
-    <Compile Include="Models\Argument.cs" />
-    <Compile Include="Models\Class.cs" />
-    <Compile Include="Models\Deserializers\ArgumentSerializer.cs" />
-    <Compile Include="Models\Deserializers\Internals.cs" />
-    <Compile Include="Models\Deserializers\TypeAdapterChain.cs" />
-    <Compile Include="Models\Deserializers\MethodSerializer.cs" />
-    <Compile Include="Models\Deserializers\TypeAdapter.cs" />
-    <Compile Include="Models\Deserializers\UML.cs" />
-    <Compile Include="Models\Diagram.cs" />
-    <Compile Include="Models\Method.cs" />
+    <Compile Include="Serializers\ArgumentSerializer.cs" />
+    <Compile Include="Serializers\Internals.cs" />
+    <Compile Include="Serializers\MethodSerializer.cs" />
+    <Compile Include="Serializers\TypeAdapter.cs" />
+    <Compile Include="Serializers\TypeAdapterChain.cs" />
+    <Compile Include="UML.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\UMLCreatorLibrary\UMLCreatorLibrary.csproj">
+      <Project>{142d0b3a-526b-4fa1-90ae-82fe9cdfd9c0}</Project>
+      <Name>UMLCreatorLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

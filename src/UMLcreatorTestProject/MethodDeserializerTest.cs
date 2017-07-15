@@ -9,7 +9,7 @@ using UMLCreatorLibrary.Models.Decoders;
 
 namespace UMLcreatorTestProject {
     [TestClass]
-    class UMLTest {
+    public class MethodDeserializerTest {
         [TestMethod]
         public void deserializeShouldThrowOnNoAccessModifier() {
             UML uml = new UML();
@@ -58,6 +58,19 @@ namespace UMLcreatorTestProject {
                 Assert.IsTrue(true);
             }
         }
+        [TestMethod]
+        public void deserializeShouldThrowOnNoReturnType() {
+            UML uml = new UML();
+            try {
+                uml.Deserialize<Method>("+(var:):");
+                Assert.Inconclusive("Should've thrown exception");
+            } catch (AssertInconclusiveException exception) {
+                Assert.Fail(exception.Message);
+            } catch (Exception) {
+                Assert.IsTrue(true);
+            }
+        }
+
 
         [TestMethod]
         public void deserializeShouldThrowOnInvalidAccessModifier() {
@@ -119,6 +132,7 @@ namespace UMLcreatorTestProject {
                 Assert.IsTrue(true);
             }
         }
+
 
     }
 }
