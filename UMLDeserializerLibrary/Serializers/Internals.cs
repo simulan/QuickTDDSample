@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace UMLSerializerLibrary.Serializers {
+    //UMLContract would be more descriptive name
     class Internals {
         internal const char ACCESS_PUBLIC = '+';
         internal const char ACCESS_PROTECTED = '#';

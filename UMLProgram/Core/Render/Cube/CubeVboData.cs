@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace UMLProgram.Core.Render.Cube {
-    public static class CubeVboData {
-        public static readonly Vector3[] Positions = new Vector3[]{
+    public static class CubeVertexData {
+        public static readonly Vector3[] Vertex = new Vector3[]{
             new Vector3(-1.0f, -1.0f,  1.0f),
             new Vector3( 1.0f, -1.0f,  1.0f),
             new Vector3( 1.0f,  1.0f,  1.0f),
