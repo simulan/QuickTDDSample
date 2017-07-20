@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UMLProgram.Core.Render.Cube;
+using UMLProgram.Core.Render.Rectangle;
 
 namespace UMLProgram.Core {
     public class UmlWindow : GameWindow {
@@ -15,7 +16,7 @@ namespace UMLProgram.Core {
         }
         protected override void OnLoad(EventArgs e) {
             VSync = VSyncMode.On;
-            CubeRenderer.Load(ClientSize);
+            RectangleRenderer.Load(ClientSize);
             GL.Enable(EnableCap.DepthTest);
             GL.ClearColor(System.Drawing.Color.MidnightBlue);
         }
@@ -29,7 +30,7 @@ namespace UMLProgram.Core {
         protected override void OnRenderFrame(FrameEventArgs e) {
             GL.Viewport(0, 0, Width, Height);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            CubeRenderer.Render();
+            RectangleRenderer.Render();
             SwapBuffers();
         }
     }
