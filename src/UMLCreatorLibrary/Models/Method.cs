@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UMLCreatorLibrary.Models.Decoders;
+using UMLCreatorLibrary.Models.Deserializers;
 
 namespace UMLCreatorLibrary.Models {
     /**

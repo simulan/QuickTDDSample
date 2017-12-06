@@ -50,15 +50,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UMLDiagramTest.cs" />
+    <Compile Include="ClassDeserializerTest.cs" />
+    <Compile Include="UMLClassTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MethodDeserializerTest.cs" />
+    <Compile Include="UMLDiagramTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\UMLDeserializerLibrary\UMLSerializerLibrary.csproj">
-      <Project>{c13860e2-d47c-4aad-84e0-00d81d424452}</Project>
-      <Name>UMLSerializerLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\UMLCreatorLibrary\UMLCreatorLibrary.csproj">
       <Project>{142d0b3a-526b-4fa1-90ae-82fe9cdfd9c0}</Project>
       <Name>UMLCreatorLibrary</Name>

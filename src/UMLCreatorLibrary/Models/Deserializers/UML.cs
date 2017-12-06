@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UMLCreatorLibrary.Models.Decoders;
 
-namespace UMLCreatorLibrary.Models.Decoders {
+namespace UMLCreatorLibrary.Models.Deserializers {
     public class UML : TypeAdapterChain {
         private Dictionary<Type, TypeAdapter<Object>> registeredSerializers = new Dictionary<Type, TypeAdapter<Object>>();
 
@@ -15,6 +14,7 @@ namespace UMLCreatorLibrary.Models.Decoders {
         private void RegisterDefaultSerializers() {
             registeredSerializers.Add(typeof(Method), new MethodSerializer(this as TypeAdapterChain));
             registeredSerializers.Add(typeof(Argument), new ArgumentSerializer());
+            registeredSerializers.Add(typeof(Class), new ClassSerializer(this as TypeAdapterChain));
         }
         public void AddSerializerTypeAdapter(Type typeOf,TypeAdapter<Object> typeAdapter) {
             registeredSerializers.Add(typeOf, typeAdapter);

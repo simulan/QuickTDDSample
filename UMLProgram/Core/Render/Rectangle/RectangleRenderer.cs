@@ -64,7 +64,7 @@ namespace UMLProgram.Core.Render.Rectangle {
             //hmm do we need these? might play around with one matrix
             float aspectRatio = clientSize.Width / (float)(clientSize.Height);
             Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, aspectRatio, 1, 100, out projectionMatrix);
-            modelviewMatrix = Matrix4.LookAt(new Vector3(0, 0, -5), new Vector3(0, 0, 1), new Vector3(0, 1, 0));
+            modelviewMatrix = Matrix4.LookAt(new Vector3(0, 0, 10), new Vector3(0, 0, 1), new Vector3(0, 1, 0));
 
             GL.UniformMatrix4(projectionMatrixLocation, false, ref projectionMatrix);
             GL.UniformMatrix4(modelviewMatrixLocation, false, ref modelviewMatrix);

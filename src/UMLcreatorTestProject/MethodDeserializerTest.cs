@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UMLCreatorLibrary.Models;
-using UMLCreatorLibrary.Models.Decoders;
+using UMLCreatorLibrary.Models.Deserializers;
+
 
 namespace UMLcreatorTestProject {
     [TestClass]

@@ -41,11 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Serializers\ArgumentSerializer.cs" />
+    <Compile Include="Serializers\ClassSerializer.cs" />
     <Compile Include="Serializers\Internals.cs" />
     <Compile Include="Serializers\MethodSerializer.cs" />
     <Compile Include="Serializers\TypeAdapter.cs" />
-    <Compile Include="Serializers\TypeAdapterChain.cs" />
-    <Compile Include="UML.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

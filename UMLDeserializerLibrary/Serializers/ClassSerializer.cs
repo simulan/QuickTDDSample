@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using UMLCreatorLibrary.Models;
+using UMLCreatorLibrary.Models.Decoders;
+using UMLSerializerLibrary.Serializers;
 
-namespace UMLCreatorLibrary.Models.Deserializers {
-    public class MethodSerializer : TypeAdapter<Method> {
+namespace UMLDeserializerLibrary.Serializers {
+    //todo change to suit classes
+    public class ClassSerializer : TypeAdapter<Class> {
         private string input;
         private TypeAdapterChain parent;
 
-        public MethodSerializer(TypeAdapterChain chain) {
+        public ClassSerializer(TypeAdapterChain chain) {
             parent = chain;
         }
-
-        public Method Deserialize(String input) {
+        public Class Deserialize(string input) {
             this.input = input;
             int typeDelimiterIndex = FindLastIndexOrThrow(Internals.TYPE_DELIMITER);
             int parameterStartDelimiterIndex = FindIndexOrThrow(Internals.PARAMETER_START_DELIMITER);
@@ -87,8 +89,10 @@ namespace UMLCreatorLibrary.Models.Deserializers {
         }
         private string DeserializeReturnType(int indexColon) {
             string returnType = input.Substring(indexColon + 1).Replace(" ", "");
-            Internals.ValidateString(returnType,"Valid return-type expected.");
+            Internals.ValidateString(returnType, "Valid return-type expected.");
             return returnType;
         }
+
+        
     }
 }

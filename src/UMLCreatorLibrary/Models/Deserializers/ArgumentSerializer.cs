@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UMLCreatorLibrary.Models.Decoders {
+namespace UMLCreatorLibrary.Models.Deserializers {
     public class ArgumentSerializer : TypeAdapter<Argument> {
         private String input;
 

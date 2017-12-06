@@ -44,6 +44,7 @@
     <Compile Include="Models\Argument.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\Deserializers\ArgumentSerializer.cs" />
+    <Compile Include="Models\Deserializers\ClassSerializer.cs" />
     <Compile Include="Models\Deserializers\Internals.cs" />
     <Compile Include="Models\Deserializers\TypeAdapterChain.cs" />
     <Compile Include="Models\Deserializers\MethodSerializer.cs" />

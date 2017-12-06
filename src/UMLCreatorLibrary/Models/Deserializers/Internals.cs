@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace UMLCreatorLibrary.Models.Decoders {
+namespace UMLCreatorLibrary.Models.Deserializers {
     class Internals {
         internal const char ACCESS_PUBLIC = '+';
         internal const char ACCESS_PROTECTED = '#';

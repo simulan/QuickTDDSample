@@ -8,16 +8,13 @@ namespace UMLcreator.models
 {
     public class Diagram
     {
-        public string Name { get; private set; }
-        public List<Method> Methods { get;private set; }
+        public List<Class> Classes { get;private set; }
 
-        public Diagram(String name) {
-            Name = name;
-            Methods = new List<Method>();
+        public Diagram() {
+            Classes = new List<Class>();
         }
-
-        public void AddMethod(Method addition) {
-            Methods.Add(addition);
+        public void AddClass(Class addition) {
+            Classes.Add(addition);
         }
     }
 }
