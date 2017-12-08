@@ -57,6 +57,10 @@
     <Compile Include="Core\Render\Rectangle\RectangleRenderer.cs" />
     <Compile Include="Core\Render\Rectangle\RectangleVertexData.cs" />
     <Compile Include="Core\Render\Renderer.cs" />
+    <Compile Include="Core\Render\Triangle\Programs\FragmentShader.cs" />
+    <Compile Include="Core\Render\Triangle\Programs\VertexShader.cs" />
+    <Compile Include="Core\Render\Triangle\TriangleRenderer.cs" />
+    <Compile Include="Core\Render\Triangle\TriangleVertexData.cs" />
     <Compile Include="Core\UmlWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

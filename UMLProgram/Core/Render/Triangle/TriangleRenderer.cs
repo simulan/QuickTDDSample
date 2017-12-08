@@ -2,15 +2,20 @@
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UMLProgram.Core.Render.Triangle.Programs;
 
 namespace UMLProgram.Core.Render.Triangle {
     public class TriangleRenderer {
-        private static int vaoHandle;
-        private static int vertexBufferHandle;
+        private static int vaoHandle,
+            vertexBufferHandle,
+            vertexShaderHandle,
+            fragmentShaderHandle,
+            shaderProgramHandle;
 
         public static void Load(Size clientSize) {
             CreateShaders(clientSize);
@@ -18,6 +23,9 @@ namespace UMLProgram.Core.Render.Triangle {
             BindBuffersToShaders();
         }
         private static void CreateShaders(Size clientSize) {
+            CompileVertexShader();
+            CompileFragmentShader();
+            SetShaderProgram();
             //compile shader vert,frag, setshaderprogram,linkmatrix
         }
         private static void CreateVertexBuffers() {
@@ -31,6 +39,26 @@ namespace UMLProgram.Core.Render.Triangle {
         private static void BindBuffersToShaders() {
             GL.GenVertexArrays(1, out vaoHandle);
             GL.BindVertexArray(vaoHandle);
+        }
+        private static void CompileVertexShader() {
+            vertexShaderHandle = GL.CreateShader(ShaderType.VertexShader);
+            GL.ShaderSource(vertexShaderHandle, VertexShader.Text);
+            GL.CompileShader(vertexShaderHandle);
+            Trace.WriteLine(GL.GetShaderInfoLog(vertexShaderHandle));
+        }
+        private static void CompileFragmentShader() {
+            fragmentShaderHandle = GL.CreateShader(ShaderType.FragmentShader);
+            GL.ShaderSource(fragmentShaderHandle, FragmentShader.Text);
+            GL.CompileShader(fragmentShaderHandle);
+            Trace.WriteLine(GL.GetShaderInfoLog(fragmentShaderHandle));
+        }
+        private static void SetShaderProgram() {
+            shaderProgramHandle = GL.CreateProgram();
+            GL.AttachShader(shaderProgramHandle, vertexShaderHandle);
+            GL.AttachShader(shaderProgramHandle, fragmentShaderHandle);
+            GL.LinkProgram(shaderProgramHandle);
+            GL.UseProgram(shaderProgramHandle);
+            Trace.WriteLine(GL.GetProgramInfoLog(shaderProgramHandle));
         }
         public static void Render() {
             GL.EnableVertexAttribArray(0);
