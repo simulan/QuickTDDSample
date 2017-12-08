@@ -10,7 +10,7 @@ using UMLCreatorLibrary.Models.Deserializers;
 
 namespace UMLcreatorTestProject {
     [TestClass]
-    class UMLDiagramTest {
+    public class UMLDiagramTest {
         [TestMethod]
         public void testGetClasses() {
             UML uml = new UML();

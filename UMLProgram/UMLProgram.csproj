@@ -50,7 +50,7 @@
   <ItemGroup>
     <Compile Include="Core\Render\Cube\CubeRenderer.cs" />
     <Compile Include="Core\Render\Cube\CubeVertexData.cs" />
-    <Compile Include="Core\Render\Cube\Programs\FragmentShader.cs" />
+    <Compile Include="Core\Render\FragmentShader.cs" />
     <Compile Include="Core\Render\Cube\Programs\VertexShader.cs" />
     <Compile Include="Core\Render\Rectangle\Programs\FragmentShader.cs" />
     <Compile Include="Core\Render\Rectangle\Programs\VertexShader.cs" />
