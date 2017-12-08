@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 
 namespace UMLProgram.Core.Render.Triangle.Programs {
     public class VertexShader {
+        public static readonly string Text = @"";
     }
 }
