@@ -11,11 +11,11 @@ using UMLProgram.Core.Render.Rectangle.Programs;
 
 namespace UMLProgram.Core.Render.Rectangle {
     public class RectangleRenderer {
-        private static Matrix4 projectionMatrix, modelviewMatrix;
+        private static Matrix4 projectionMatrix, viewMatrix;
         private static int vertexShaderHandle,
             fragmentShaderHandle,
             shaderProgramHandle,
-            modelviewMatrixLocation,
+            viewMatrixLocation,
             projectionMatrixLocation,
             vaoHandle,
             vertexBufferHandle,
@@ -59,15 +59,14 @@ namespace UMLProgram.Core.Render.Rectangle {
         }
         private static void SetMatrix(Size clientSize) {
             projectionMatrixLocation = GL.GetUniformLocation(shaderProgramHandle, "projection_matrix");
-            modelviewMatrixLocation = GL.GetUniformLocation(shaderProgramHandle, "modelview_matrix");
+            viewMatrixLocation = GL.GetUniformLocation(shaderProgramHandle, "modelview_matrix");
             
-            //hmm do we need these? might play around with one matrix
             float aspectRatio = clientSize.Width / (float)(clientSize.Height);
             Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, aspectRatio, 1, 100, out projectionMatrix);
-            modelviewMatrix = Matrix4.LookAt(new Vector3(0, 0, 25), new Vector3(0, 0, 1), new Vector3(0, 1, 0));
+            viewMatrix = Matrix4.LookAt(new Vector3(0, 0, 25), new Vector3(0, 0, 1), new Vector3(0, 1, 0));
 
             GL.UniformMatrix4(projectionMatrixLocation, false, ref projectionMatrix);
-            GL.UniformMatrix4(modelviewMatrixLocation, false, ref modelviewMatrix);
+            GL.UniformMatrix4(viewMatrixLocation, false, ref viewMatrix);
         }
 
         private static void CreateVertexBuffers() {
