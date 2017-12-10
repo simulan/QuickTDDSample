@@ -85,19 +85,18 @@ namespace UMLProgram.Core.Render.ColorCube {
         private static void BindBuffersToShaders() {
             GL.GenVertexArrays(1, out vaoHandle);
             GL.BindVertexArray(vaoHandle);
-
         }
 
         public static void Render() {
             GL.EnableVertexAttribArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
-            GL.DisableVertexAttribArray(0);
             GL.EnableVertexAttribArray(1);
             GL.BindBuffer(BufferTarget.ArrayBuffer, colorBufferHandle);
             GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, CubeVertexData.Vertices.Count() * 3);
             GL.DisableVertexAttribArray(1);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, CubeVertexData.Vertices.Count()*3);
+            GL.DisableVertexAttribArray(0);
 
         }
     }
