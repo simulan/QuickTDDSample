@@ -78,7 +78,7 @@ namespace UMLProgram.Core.Render.Rectangle {
             GL.GenBuffers(1, out vertexBufferHandle);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
             GL.BufferData<Vector3>(BufferTarget.ArrayBuffer,
-                new IntPtr(RectangleVertexData.Vertex.Length * Vector3.SizeInBytes), RectangleVertexData.Vertex, BufferUsageHint.StaticDraw);
+                new IntPtr(RectangleVertexData.Vertices.Length * Vector3.SizeInBytes), RectangleVertexData.Vertices, BufferUsageHint.StaticDraw);
         }
         private static void BufferIndices() {
             GL.GenBuffers(1, out indicesBufferHandle);

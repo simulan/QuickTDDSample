@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Render\ColorCube\ColorCubeRenderer.cs" />
+    <Compile Include="Core\Render\ColorCube\CubeVertexData.cs" />
+    <Compile Include="Core\Render\ColorCube\Programs\VertexShader.cs" />
     <Compile Include="Core\Render\Cube\CubeRenderer.cs" />
     <Compile Include="Core\Render\Cube\CubeVertexData.cs" />
     <Compile Include="Core\Render\FragmentShader.cs" />
