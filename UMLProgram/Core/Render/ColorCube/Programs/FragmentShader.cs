@@ -14,7 +14,6 @@ namespace UMLProgram.Core.Render.ColorCube.Programs {
             void main(){
               color = fragmentColor;
             }
-
         ";
     }
 }
