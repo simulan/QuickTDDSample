@@ -18,6 +18,7 @@ namespace UMLProgram.Core {
         }
         protected override void OnLoad(EventArgs e) {
             VSync = VSyncMode.On;
+            GL.Enable(EnableCap.DepthTest);
             ColorCubeRenderer.Load(ClientSize);
             GL.ClearColor(System.Drawing.Color.MidnightBlue);
         }
