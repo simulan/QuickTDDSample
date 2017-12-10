@@ -70,15 +70,22 @@ namespace UMLProgram.Core.Render.ColorCube {
         }
         private static void CreateVertexBuffers() {
             BufferVertices();
+            BufferColors();
         }
         private static void BufferVertices() {
             GL.GenBuffers(1, out vertexBufferHandle);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
             GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(CubeVertexData.Vertices.Length * Vector3.SizeInBytes), CubeVertexData.Vertices, BufferUsageHint.StaticDraw);
         }
+        private static void BufferColors() {
+            GL.GenBuffers(1, out colorBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, colorBufferHandle);
+            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(CubeVertexData.Colors.Length * Vector3.SizeInBytes), CubeVertexData.Colors, BufferUsageHint.StaticDraw);
+        }
         private static void BindBuffersToShaders() {
             GL.GenVertexArrays(1, out vaoHandle);
             GL.BindVertexArray(vaoHandle);
+
         }
 
         public static void Render() {
@@ -90,7 +97,7 @@ namespace UMLProgram.Core.Render.ColorCube {
             GL.BindBuffer(BufferTarget.ArrayBuffer, colorBufferHandle);
             GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
             GL.DisableVertexAttribArray(1);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, CubeVertexData.Vertices.Count());
+            GL.DrawArrays(PrimitiveType.Triangles, 0, CubeVertexData.Vertices.Count()*3);
 
         }
     }
