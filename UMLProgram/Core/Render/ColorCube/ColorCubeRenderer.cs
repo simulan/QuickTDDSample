@@ -12,7 +12,7 @@ using UMLProgram.Core.Render.ColorCube.Programs;
 namespace UMLProgram.Core.Render.ColorCube {
     public class ColorCubeRenderer {
         private static Matrix4 projectionMatrix, viewMatrix, modelMatrix;
-        private static int vaoHandle,
+        private static int vaoHandle, 
             vertexBufferHandle,
             colorBufferHandle,
             vertexShaderHandle,
@@ -23,9 +23,13 @@ namespace UMLProgram.Core.Render.ColorCube {
             viewMatrixLocation;
 
         public static void Load(Size clientSize) {
+            CreateVAO();
+            CreateBuffersForShaders();
             CreateShaders(clientSize);
-            CreateVertexBuffers();
-            BindBuffersToShaders();
+        }
+        private static void CreateVAO() {
+            GL.GenVertexArrays(1, out vaoHandle);
+            GL.BindVertexArray(vaoHandle);
         }
         private static void CreateShaders(Size clientSize) {
             CompileVertexShader();
@@ -68,7 +72,7 @@ namespace UMLProgram.Core.Render.ColorCube {
             GL.UniformMatrix4(modelMatrixLocation, false, ref modelMatrix);
 
         }
-        private static void CreateVertexBuffers() {
+        private static void CreateBuffersForShaders() {
             BufferVertices();
             BufferColors();
         }
@@ -82,11 +86,6 @@ namespace UMLProgram.Core.Render.ColorCube {
             GL.BindBuffer(BufferTarget.ArrayBuffer, colorBufferHandle);
             GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(CubeVertexData.Colors.Length * Vector3.SizeInBytes), CubeVertexData.Colors, BufferUsageHint.StaticDraw);
         }
-        private static void BindBuffersToShaders() {
-            GL.GenVertexArrays(1, out vaoHandle);
-            GL.BindVertexArray(vaoHandle);
-        }
-
         public static void Render() {
             GL.EnableVertexAttribArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
@@ -97,7 +96,6 @@ namespace UMLProgram.Core.Render.ColorCube {
             GL.DrawArrays(PrimitiveType.Triangles, 0, CubeVertexData.Vertices.Count() * 3);
             GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);
-
         }
     }
 }
