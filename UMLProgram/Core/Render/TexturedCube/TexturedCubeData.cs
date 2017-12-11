@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace UMLProgram.Core.Render.TexturedCube {
     public class TexturedCubeData {
         public class Texture {
-            public static readonly Vector2[] Coordinates = {
+            public static readonly Vector2[] UVs = {
                 new Vector2(0.000059f, 1.0f-0.000004f),
                 new Vector2(    0.000103f, 1.0f-0.336048f),
                 new Vector2(    0.335973f, 1.0f-0.335903f),

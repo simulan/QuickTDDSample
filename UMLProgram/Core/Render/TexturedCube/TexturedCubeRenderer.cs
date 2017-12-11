@@ -14,6 +14,7 @@ namespace UMLProgram.Core.Render.TexturedCube {
     public class TexturedCubeRenderer {
         private static Matrix4 projectionMatrix, viewMatrix, modelMatrix;
         private static int vertexBufferHandle,
+            textureUVHandle,
             colorBufferHandle,
             vertexShaderHandle,
             textureHandle,
@@ -24,18 +25,28 @@ namespace UMLProgram.Core.Render.TexturedCube {
             viewMatrixLocation;
 
         public static void Load(Size clientSize) {
+            LoadTexture();
             CreateBuffersForShaders();
             CreateShaders(clientSize);   
         }
-        private static void CreateBuffersForShaders() {
-            BufferTexture();
-            BufferVertices();
-        }
-        private static void BufferTexture() {
+        private static void LoadTexture() {
 
         }
-        private static void BufferVertices() {
+        private static void CreateBuffersForShaders() {
+            BufferVertices();
+            BufferTextureUV();
         }
+        private static void BufferVertices() {
+            GL.GenBuffers(0, out vertexBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
+            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(TexturedCubeData.Vertices.Length * Vector3.SizeInBytes), TexturedCubeData.Vertices, BufferUsageHint.StaticDraw);
+        }
+        private static void BufferTextureUV() {
+            GL.GenBuffers(1, out textureUVHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 1);
+            GL.BufferData<Vector2>(BufferTarget.ArrayBuffer, new IntPtr(TexturedCubeData.Texture.UVs.Length * Vector2.SizeInBytes), TexturedCubeData.Texture.UVs, BufferUsageHint.StaticDraw);
+        }
+        
         private static void CreateShaders(Size clientSize) {
             CompileVertexShader();
             CompileFragmentShader();

@@ -16,8 +16,7 @@ namespace UMLProgram.Core.Render.TexturedCube.Programs {
             uniform mat4 model_matrix;
 
             void main(){
-
-                // UV of the vertex. No special space for this one.
+                gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertexPosition_modelspace, 1);
                 UV = vertexUV;
             }
         ";
