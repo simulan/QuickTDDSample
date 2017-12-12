@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Loaders\Files\DDS.cs" />
+    <Compile Include="Core\Loaders\DDSLoader.cs" />
     <Compile Include="Core\Render\ColorCube\ColorCubeRenderer.cs" />
     <Compile Include="Core\Render\ColorCube\CubeVertexData.cs" />
     <Compile Include="Core\Render\ColorCube\Programs\FragmentShader.cs" />
@@ -61,6 +63,10 @@
     <Compile Include="Core\Render\Rectangle\RectangleRenderer.cs" />
     <Compile Include="Core\Render\Rectangle\RectangleVertexData.cs" />
     <Compile Include="Core\Render\Renderer.cs" />
+    <Compile Include="Core\Render\TexturedCube\Programs\FragmentShader.cs" />
+    <Compile Include="Core\Render\TexturedCube\Programs\VertexShader.cs" />
+    <Compile Include="Core\Render\TexturedCube\CubeData.cs" />
+    <Compile Include="Core\Render\TexturedCube\TexturedCubeRenderer.cs" />
     <Compile Include="Core\Render\Triangle\Programs\FragmentShader.cs" />
     <Compile Include="Core\Render\Triangle\Programs\VertexShader.cs" />
     <Compile Include="Core\Render\Triangle\TriangleRenderer.cs" />

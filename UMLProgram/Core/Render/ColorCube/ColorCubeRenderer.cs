@@ -25,7 +25,20 @@ namespace UMLProgram.Core.Render.ColorCube {
             CreateBuffersForShaders();
             CreateShaders(clientSize);
         }
-        
+        private static void CreateBuffersForShaders() {
+            BufferVertices();
+            BufferColors();
+        }
+        private static void BufferVertices() {
+            GL.GenBuffers(1, out vertexBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
+            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(CubeVertexData.Vertices.Length * Vector3.SizeInBytes), CubeVertexData.Vertices, BufferUsageHint.StaticDraw);
+        }
+        private static void BufferColors() {
+            GL.GenBuffers(1, out colorBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, colorBufferHandle);
+            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(CubeVertexData.Colors.Length * Vector3.SizeInBytes), CubeVertexData.Colors, BufferUsageHint.StaticDraw);
+        }
         private static void CreateShaders(Size clientSize) {
             CompileVertexShader();
             CompileFragmentShader();
@@ -67,20 +80,8 @@ namespace UMLProgram.Core.Render.ColorCube {
             GL.UniformMatrix4(modelMatrixLocation, false, ref modelMatrix);
 
         }
-        private static void CreateBuffersForShaders() {
-            BufferVertices();
-            BufferColors();
-        }
-        private static void BufferVertices() {
-            GL.GenBuffers(1, out vertexBufferHandle);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
-            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(CubeVertexData.Vertices.Length * Vector3.SizeInBytes), CubeVertexData.Vertices, BufferUsageHint.StaticDraw);
-        }
-        private static void BufferColors() {
-            GL.GenBuffers(1, out colorBufferHandle);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, colorBufferHandle);
-            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(CubeVertexData.Colors.Length * Vector3.SizeInBytes), CubeVertexData.Colors, BufferUsageHint.StaticDraw);
-        }
+
+
         public static void Render() {
             GL.EnableVertexAttribArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);

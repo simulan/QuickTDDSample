@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace UMLProgram.Core.Render.TexturedCube {
-    public class TexturedCubeData {
+    public class CubeData {
         public class Texture {
             public static readonly Vector2[] UVs = {
                 new Vector2(0.000059f, 1.0f-0.000004f),

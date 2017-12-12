@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using UMLProgram.Core.Render.ColorCube;
 using UMLProgram.Core.Render.Cube;
 using UMLProgram.Core.Render.Rectangle;
+using UMLProgram.Core.Render.TexturedCube;
 using UMLProgram.Core.Render.Triangle;
 
 namespace UMLProgram.Core {
@@ -19,7 +20,7 @@ namespace UMLProgram.Core {
         protected override void OnLoad(EventArgs e) {
             VSync = VSyncMode.On;
             GL.Enable(EnableCap.DepthTest);
-            ColorCubeRenderer.Load(ClientSize);
+            TexturedCubeRenderer.Load(ClientSize);
             GL.ClearColor(System.Drawing.Color.MidnightBlue);
         }
         protected override void OnResize(EventArgs e) {
@@ -32,7 +33,7 @@ namespace UMLProgram.Core {
         protected override void OnRenderFrame(FrameEventArgs e) {
             GL.Viewport(0, 0, Width, Height);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            ColorCubeRenderer.Render();
+            TexturedCubeRenderer.Render();
             SwapBuffers();
         }
     }

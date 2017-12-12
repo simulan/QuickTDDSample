@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,6 @@ namespace UMLProgram.Core.Render.TexturedCube {
         private static Matrix4 projectionMatrix, viewMatrix, modelMatrix;
         private static int vertexBufferHandle,
             textureUVHandle,
-            colorBufferHandle,
             vertexShaderHandle,
             textureHandle,
             fragmentShaderHandle,
@@ -30,21 +30,22 @@ namespace UMLProgram.Core.Render.TexturedCube {
             CreateShaders(clientSize);   
         }
         private static void LoadTexture() {
-
+            String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\texture.dds";
+            textureHandle = Loaders.DDSLoader.Load(file);
         }
         private static void CreateBuffersForShaders() {
             BufferVertices();
             BufferTextureUV();
         }
         private static void BufferVertices() {
-            GL.GenBuffers(0, out vertexBufferHandle);
+            GL.GenBuffers(1, out vertexBufferHandle);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
-            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(TexturedCubeData.Vertices.Length * Vector3.SizeInBytes), TexturedCubeData.Vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(CubeData.Vertices.Length * Vector3.SizeInBytes), CubeData.Vertices, BufferUsageHint.StaticDraw);
         }
         private static void BufferTextureUV() {
             GL.GenBuffers(1, out textureUVHandle);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 1);
-            GL.BufferData<Vector2>(BufferTarget.ArrayBuffer, new IntPtr(TexturedCubeData.Texture.UVs.Length * Vector2.SizeInBytes), TexturedCubeData.Texture.UVs, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, textureUVHandle);
+            GL.BufferData<Vector2>(BufferTarget.ArrayBuffer, new IntPtr(CubeData.Texture.UVs.Length * Vector2.SizeInBytes), CubeData.Texture.UVs, BufferUsageHint.StaticDraw);
         }
         
         private static void CreateShaders(Size clientSize) {
@@ -60,10 +61,10 @@ namespace UMLProgram.Core.Render.TexturedCube {
             Trace.WriteLine(GL.GetShaderInfoLog(vertexShaderHandle));
         }
         private static void CompileFragmentShader() {
-            fragmentShaderHandle = GL.CreateShader(ShaderType.VertexShader);
+            fragmentShaderHandle = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShaderHandle, FragmentShader.Text);
             GL.CompileShader(fragmentShaderHandle);
-            Trace.WriteLine(GL.GetShaderInfoLog(vertexShaderHandle));
+            Trace.WriteLine(GL.GetShaderInfoLog(fragmentShaderHandle));
         }
         private static void SetShaderProgram() {
             shaderProgramHandle = GL.CreateProgram();
@@ -88,7 +89,15 @@ namespace UMLProgram.Core.Render.TexturedCube {
             GL.UniformMatrix4(modelMatrixLocation, false, ref modelMatrix);
         }
         public static void Render() {
-        
+            GL.EnableVertexAttribArray(0);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
+            GL.EnableVertexAttribArray(1);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, textureUVHandle);
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, CubeData.Vertices.Count());
+            GL.DisableVertexAttribArray(1);
+            GL.DisableVertexAttribArray(0);
         }
     }
 }
