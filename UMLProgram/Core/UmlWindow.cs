@@ -21,7 +21,6 @@ namespace UMLProgram.Core {
         private const int DEFAULT_WIDTH = 1024;
         private const int DEFAULT_HEIGTH = 768;
 
-
         public UmlWindow() {
             ClientSize = new Size(DEFAULT_WIDTH,DEFAULT_HEIGTH);
             controller = new Controller(Keyboard.NumberOfKeys);
@@ -31,7 +30,7 @@ namespace UMLProgram.Core {
             VSync = VSyncMode.On;
             GL.Enable(EnableCap.DepthTest);
             TexturedCubeRenderer.Load(ClientSize);
-            GL.ClearColor(System.Drawing.Color.MidnightBlue);
+            GL.ClearColor(Color.MidnightBlue);
         }
         private void CalculateInnerWindow() {
             int borderSize = (Bounds.Width - ClientSize.Width) / 2;
@@ -51,10 +50,8 @@ namespace UMLProgram.Core {
             controller.CalculateChanges(e.Time, new Point(Mouse.X, Mouse.Y),Mouse.Wheel,Keyboard.GetState());
             TexturedCubeRenderer.Draw();
             TexturedCubeRenderer.Update(controller.Data);
+            OpenTK.Input.Mouse.SetPosition(innerWindow.Left + (Width / 2), innerWindow.Top + (Height / 2));
             SwapBuffers();
-            
-            //GameWindow.Y + Height/2 does not equal the exact center of the inner-window   
-            OpenTK.Input.Mouse.SetPosition(innerWindow.Left+(Width/2), innerWindow.Top+(Height/2));
         }
 
 
