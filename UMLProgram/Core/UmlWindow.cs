@@ -3,9 +3,11 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UMLProgram.Core.Input;
 using UMLProgram.Core.Render.ColorCube;
 using UMLProgram.Core.Render.Cube;
 using UMLProgram.Core.Render.Rectangle;
@@ -14,14 +16,27 @@ using UMLProgram.Core.Render.Triangle;
 
 namespace UMLProgram.Core {
     public class UmlWindow : GameWindow {
+        private Controller controller;
+        private Rectangle innerWindow;
+        private const int DEFAULT_WIDTH = 1024;
+        private const int DEFAULT_HEIGTH = 768;
+
 
         public UmlWindow() {
+            ClientSize = new Size(DEFAULT_WIDTH,DEFAULT_HEIGTH);
+            controller = new Controller(Keyboard.NumberOfKeys);
         }
         protected override void OnLoad(EventArgs e) {
+            CalculateInnerWindow();
             VSync = VSyncMode.On;
             GL.Enable(EnableCap.DepthTest);
             TexturedCubeRenderer.Load(ClientSize);
             GL.ClearColor(System.Drawing.Color.MidnightBlue);
+        }
+        private void CalculateInnerWindow() {
+            int borderSize = (Bounds.Width - ClientSize.Width) / 2;
+            int titleBarSize = Bounds.Height - ClientSize.Height - 2 * borderSize;
+            innerWindow = new Rectangle(new Point(X + borderSize, Y + borderSize + titleBarSize), ClientSize);
         }
         protected override void OnResize(EventArgs e) {
             base.OnResize(e);
@@ -33,8 +48,15 @@ namespace UMLProgram.Core {
         protected override void OnRenderFrame(FrameEventArgs e) {
             GL.Viewport(0, 0, Width, Height);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            TexturedCubeRenderer.Render();
+            controller.CalculateChanges(e.Time, new Point(Mouse.X, Mouse.Y),Mouse.Wheel,Keyboard.GetState());
+            TexturedCubeRenderer.Draw();
+            TexturedCubeRenderer.Update(controller.Data);
             SwapBuffers();
+            
+            //GameWindow.Y + Height/2 does not equal the exact center of the inner-window   
+            OpenTK.Input.Mouse.SetPosition(innerWindow.Left+(Width/2), innerWindow.Top+(Height/2));
         }
+
+
     }
 }

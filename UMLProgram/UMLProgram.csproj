@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Input\Controller.cs" />
     <Compile Include="Core\Loaders\Files\DDS.cs" />
     <Compile Include="Core\Loaders\DDSLoader.cs" />
     <Compile Include="Core\Render\ColorCube\ColorCubeRenderer.cs" />

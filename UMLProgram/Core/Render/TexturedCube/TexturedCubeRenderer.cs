@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UMLProgram.Core.Input;
 using UMLProgram.Core.Render.TexturedCube.Programs;
 
 
@@ -23,6 +25,7 @@ namespace UMLProgram.Core.Render.TexturedCube {
             projectionMatrixLocation,
             modelMatrixLocation,
             viewMatrixLocation;
+
 
         public static void Load(Size clientSize) {
             LoadTexture();
@@ -88,7 +91,14 @@ namespace UMLProgram.Core.Render.TexturedCube {
             GL.UniformMatrix4(viewMatrixLocation, false, ref viewMatrix);
             GL.UniformMatrix4(modelMatrixLocation, false, ref modelMatrix);
         }
-        public static void Render() {
+        public static void Update(Controller.ControllerData data) {
+            Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(data.FOV), 4 / 3, 0.1f, 100, out projectionMatrix);
+            Vector3 up = Vector3.Cross(  data.Right, data.Direction);
+            viewMatrix = Matrix4.LookAt( data.Position, data.Position+data.Direction, up);
+            GL.UniformMatrix4(projectionMatrixLocation, false, ref projectionMatrix);
+            GL.UniformMatrix4(viewMatrixLocation, false, ref viewMatrix);
+        }
+        public static void Draw() {
             GL.EnableVertexAttribArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
@@ -99,5 +109,6 @@ namespace UMLProgram.Core.Render.TexturedCube {
             GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);
         }
+
     }
 }

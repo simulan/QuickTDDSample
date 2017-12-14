@@ -83,6 +83,19 @@ namespace UMLProgram.Core.Render.ColorCube {
 
 
         public static void Render() {
+            ComputeMatricesFromInput();
+            Draw();
+        }
+        private static void ComputeMatricesFromInput() {
+            Vector3 position = new Vector3(0, 0, 5);
+            float horizontalAngle = 3.14f;
+            float verticalAngle = 0.0f;
+            float initialFoV = 45.0f;
+            float speed = 3.0f; // 3 units / second
+            float mouseSpeed = 0.005f;
+            
+        }
+        private static void Draw() {
             GL.EnableVertexAttribArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
@@ -93,5 +106,6 @@ namespace UMLProgram.Core.Render.ColorCube {
             GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);
         }
+
     }
 }
