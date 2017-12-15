@@ -7,18 +7,24 @@ using System.Threading.Tasks;
 
 namespace UMLProgram.Core.Loaders {
     public class BlenderLoader {
+        private const int MAX_LINE_CHARS=80;
+        private const int CHAR_SIZE = 2;
+        private const int CHUNK_SIZE = MAX_LINE_CHARS * CHAR_SIZE;
+
+        struct ChunkResult {
+            string CurrentLine;
+            string NextLine;
+        }
+
         public static bool Load(string filename) {
             FileStream stream = new FileStream(filename, FileMode.Open);
-            ValidateBlenderFileStream(stream);
-
-            return true;
-        }
-        private static void ValidateBlenderFileStream(FileStream stream) {
-            if (stream.CanRead) {
-                
-            } else {
-                throw new IOException(stream.Name + " does not support reading atm.");
+            byte[] chunk = new byte[CHUNK_SIZE];
+            int offset = 0;
+            while (stream.CanRead) {
+                stream.Read(chunk, offset, MAX_LINE_CHARS);
+                offset += MAX_LINE_CHARS; 
             }
+            return true;
         }
     }
 }
