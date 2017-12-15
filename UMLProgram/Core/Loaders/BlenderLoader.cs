@@ -10,6 +10,7 @@ namespace UMLProgram.Core.Loaders {
         public static bool Load(string filename) {
             FileStream stream = new FileStream(filename, FileMode.Open);
             ValidateBlenderFileStream(stream);
+
             return true;
         }
         private static void ValidateBlenderFileStream(FileStream stream) {
