@@ -48,10 +48,10 @@ namespace UMLProgram.Core {
         protected override void OnRenderFrame(FrameEventArgs e) {
             GL.Viewport(0, 0, Width, Height);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            //controller.CalculateChanges(e.Time, new Point(Mouse.X, Mouse.Y),Mouse.Wheel,Keyboard.GetState());
+            controller.CalculateChanges(e.Time, new Point(Mouse.X, Mouse.Y),Mouse.Wheel,Keyboard.GetState());
             SimpleObjectRenderer.Draw();
-            SimpleObjectRenderer.Update();
-            //OpenTK.Input.Mouse.SetPosition(innerWindow.Left + (Width / 2), innerWindow.Top + (Height / 2));
+            SimpleObjectRenderer.Update(controller.Data);
+            OpenTK.Input.Mouse.SetPosition(innerWindow.Left + (Width / 2), innerWindow.Top + (Height / 2));
             SwapBuffers();
         }
     }

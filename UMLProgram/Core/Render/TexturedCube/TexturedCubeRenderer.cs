@@ -26,14 +26,14 @@ namespace UMLProgram.Core.Render.TexturedCube {
             modelMatrixLocation,
             viewMatrixLocation;
 
-
         public static void Load(Size clientSize) {
             LoadTexture();
             CreateBuffersForShaders();
             CreateShaders(clientSize);   
         }
         private static void LoadTexture() {
-            throw new NotImplementedException("check previous versions");
+            String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\texture.dds";
+            textureHandle = Loaders.DDSLoader.Load(file);
         }
         private static void CreateBuffersForShaders() {
             BufferVertices();

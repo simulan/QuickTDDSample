@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UMLProgram.Core.Input;
 using UMLProgram.Core.Loaders;
 using UMLProgram.Core.Loaders.Files;
 using UMLProgram.Core.Render.SimpleObject.Programs;
@@ -15,31 +16,44 @@ namespace UMLProgram.Core.Render.SimpleObject {
     public class SimpleObjectRenderer {
         private static Matrix4 projectionMatrix, viewMatrix, modelMatrix;
         private static int vertexBufferHandle,
+            textureHandle,
+            textureUVHandle,
             vertexShaderHandle,
             fragmentShaderHandle,
             shaderProgramHandle,
             projectionMatrixLocation,
             modelMatrixLocation,
-            viewMatrixLocation;
-        private static int vertexCount;
+            viewMatrixLocation,
+            vertexCount;
 
         public static void Load(Size clientSize) {
+            LoadTexture();
             ObjImport importModel = LoadObj();
             vertexCount = importModel.Vertices.Count();
             CreateBuffersForShaders(importModel);
             CreateShaders(clientSize);
+        }
+        private static void LoadTexture() {
+            String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\texture.dds";
+            textureHandle = DDSLoader.Load(file);
         }
         private static ObjImport LoadObj() {
             String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\box.obj";
             return BlenderLoader.Load(file);
         }
         private static void CreateBuffersForShaders(ObjImport model) {
-            BufferVertices(model);
+            BufferVertices(model.Vertices);
+            BufferUVs(model.UVs);
         }
-        private static void BufferVertices(ObjImport model) {
+        private static void BufferVertices(Vector3[] vertices) {
             GL.GenBuffers(1, out vertexBufferHandle);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
-            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(model.Vertices.Length * Vector3.SizeInBytes), model.Vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(vertices.Length * Vector3.SizeInBytes), vertices, BufferUsageHint.StaticDraw);
+        }
+        private static void BufferUVs(Vector2[] uvs) {
+            GL.GenBuffers(1, out textureUVHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, textureUVHandle);
+            GL.BufferData<Vector2>(BufferTarget.ArrayBuffer, new IntPtr(uvs.Length * Vector2.SizeInBytes), uvs, BufferUsageHint.StaticDraw);
         }
         private static void CreateShaders(Size clientSize) {
             CompileVertexShader();
@@ -82,13 +96,22 @@ namespace UMLProgram.Core.Render.SimpleObject {
             GL.UniformMatrix4(modelMatrixLocation, false, ref modelMatrix);
         }
 
-        public static void Update() {
+        public static void Update(Controller.ControllerData data) {
+            Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(data.FOV), 4 / 3, 0.1f, 100, out projectionMatrix);
+            Vector3 up = Vector3.Cross(data.Right, data.Direction);
+            viewMatrix = Matrix4.LookAt(data.Position, data.Position + data.Direction, up);
+            GL.UniformMatrix4(projectionMatrixLocation, false, ref projectionMatrix);
+            GL.UniformMatrix4(viewMatrixLocation, false, ref viewMatrix);
         }
         public static void Draw() {
             GL.EnableVertexAttribArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
+            GL.EnableVertexAttribArray(1);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, textureUVHandle);
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
             GL.DrawArrays(PrimitiveType.Triangles, 0, vertexCount);
+            GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);
         }
 
