@@ -67,6 +67,9 @@
     <Compile Include="Core\Render\Rectangle\RectangleRenderer.cs" />
     <Compile Include="Core\Render\Rectangle\RectangleVertexData.cs" />
     <Compile Include="Core\Render\Renderer.cs" />
+    <Compile Include="Core\Render\SimpleObject\Programs\FragmentShader.cs" />
+    <Compile Include="Core\Render\SimpleObject\Programs\VertexShader.cs" />
+    <Compile Include="Core\Render\SimpleObject\SimpleObjectRenderer.cs" />
     <Compile Include="Core\Render\TexturedCube\Programs\FragmentShader.cs" />
     <Compile Include="Core\Render\TexturedCube\Programs\VertexShader.cs" />
     <Compile Include="Core\Render\TexturedCube\CubeData.cs" />
