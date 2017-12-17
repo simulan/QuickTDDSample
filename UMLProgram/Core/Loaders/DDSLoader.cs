@@ -51,7 +51,7 @@ namespace UMLProgram.Core.Loaders {
         }
         private static void ValidateDDSFileStream(FileStream stream) {
             if (stream.CanRead) {
-                if (!isDDS(stream)) {
+                if (!IsDDS(stream)) {
                     throw new IOException("only .dds filecode is supported.");
                 }
             } else {
@@ -70,7 +70,7 @@ namespace UMLProgram.Core.Loaders {
                 file.header.Height /= 2;
             }
         }
-        private static bool isDDS(FileStream stream) {
+        private static bool IsDDS(FileStream stream) {
             byte[] fileCodeInBytes = new byte[FILECODE_SIZE];
             int result = stream.Read(fileCodeInBytes, 0, FILECODE_SIZE);
             if (result > 0) {

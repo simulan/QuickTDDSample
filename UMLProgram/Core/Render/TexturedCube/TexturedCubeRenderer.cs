@@ -33,8 +33,8 @@ namespace UMLProgram.Core.Render.TexturedCube {
             CreateShaders(clientSize);   
         }
         private static void LoadTexture() {
-            String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\texture.dds";
-            textureHandle = Loaders.DDSLoader.Load(file);
+            String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\box.obj";
+            Loaders.BlenderLoader.Load(file);
         }
         private static void CreateBuffersForShaders() {
             BufferVertices();
