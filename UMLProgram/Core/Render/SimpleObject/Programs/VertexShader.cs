@@ -9,7 +9,8 @@ namespace UMLProgram.Core.Render.SimpleObject.Programs {
         public static readonly string Text = @"
             #version 330 core
             layout(location = 0) in vec3 vertexPosition_modelspace;
-            layout(location = 1) in vec3 vertexColor;
+            layout(location = 1) in vec2 vertexUV;
+            out vec2 UV;
             uniform mat4 projection_matrix;
             uniform mat4 view_matrix;
             uniform mat4 model_matrix;
@@ -17,7 +18,7 @@ namespace UMLProgram.Core.Render.SimpleObject.Programs {
             
             void main(){
               gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertexPosition_modelspace, 1);
-              fragmentColor = vertexColor;
+              UV=vertexUV;
             }
         ";
     }
