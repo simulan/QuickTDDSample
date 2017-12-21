@@ -18,7 +18,7 @@ namespace UMLProgram.Core.Input {
             Data = new ControllerData();
         }
 
-        //TODO: should be independant of controller
+        //TODO: should be independant of controller (Demeter)
         // As this data is significant for Renderer's but the controller is not.
         public class ControllerData {
             public Vector3 Direction,Right;

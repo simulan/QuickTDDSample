@@ -15,15 +15,22 @@ using UMLProgram.Core.Render.SimpleObject.Programs;
 namespace UMLProgram.Core.Render.SimpleObject {
     public class SimpleObjectRenderer {
         private static Matrix4 projectionMatrix, viewMatrix, modelMatrix;
+        private static Vector3 lightColorUniform = new Vector3(0.8f, 0.8f, 0.8f);
+        private static Vector3 lightPositionUniform = new Vector3(5, 5, 0); 
+        private static int lightPowerUniform = 2;
         private static int vertexBufferHandle,
+            uvBufferHandle,
+            normalBufferHandle,
             textureHandle,
-            textureUVHandle,
             vertexShaderHandle,
             fragmentShaderHandle,
             shaderProgramHandle,
             projectionMatrixLocation,
             modelMatrixLocation,
             viewMatrixLocation,
+            lightColorUniformLocation,
+            lightPowerUniformLocation,
+            lightPositionUniformLocation,
             vertexCount;
 
         public static void Load(Size clientSize) {
@@ -44,6 +51,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
         private static void CreateBuffersForShaders(ObjImport model) {
             BufferVertices(model.Vertices);
             BufferUVs(model.UVs);
+            BufferNormals(model.Normals);
         }
         private static void BufferVertices(Vector3[] vertices) {
             GL.GenBuffers(1, out vertexBufferHandle);
@@ -51,15 +59,21 @@ namespace UMLProgram.Core.Render.SimpleObject {
             GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(vertices.Length * Vector3.SizeInBytes), vertices, BufferUsageHint.StaticDraw);
         }
         private static void BufferUVs(Vector2[] uvs) {
-            GL.GenBuffers(1, out textureUVHandle);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, textureUVHandle);
+            GL.GenBuffers(1, out uvBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, uvBufferHandle);
             GL.BufferData<Vector2>(BufferTarget.ArrayBuffer, new IntPtr(uvs.Length * Vector2.SizeInBytes), uvs, BufferUsageHint.StaticDraw);
+        }
+        private static void BufferNormals(Vector3[] normals) {
+            GL.GenBuffers(1, out normalBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, normalBufferHandle);
+            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(normals.Length * Vector3.SizeInBytes), normals, BufferUsageHint.StaticDraw);
         }
         private static void CreateShaders(Size clientSize) {
             CompileVertexShader();
             CompileFragmentShader();
             SetShaderProgram();
             SupplyShaderMatrices(clientSize);
+            SupplyShaderVars();
         }
         private static void CompileVertexShader() {
             vertexShaderHandle = GL.CreateShader(ShaderType.VertexShader);
@@ -95,7 +109,14 @@ namespace UMLProgram.Core.Render.SimpleObject {
             GL.UniformMatrix4(viewMatrixLocation, false, ref viewMatrix);
             GL.UniformMatrix4(modelMatrixLocation, false, ref modelMatrix);
         }
-
+        private static void SupplyShaderVars() {
+            lightColorUniformLocation = GL.GetUniformLocation(shaderProgramHandle, "light_color");
+            lightPowerUniformLocation = GL.GetUniformLocation(shaderProgramHandle, "light_power");
+            lightPositionUniformLocation = GL.GetUniformLocation(shaderProgramHandle, "light_position_worldspace");
+            GL.Uniform3(lightColorUniformLocation, ref lightColorUniform); 
+            GL.Uniform1(lightPowerUniformLocation, lightPowerUniform);
+            GL.Uniform3(lightPositionUniformLocation, lightPositionUniform);
+        }
         public static void Update(Controller.ControllerData data) {
             Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(data.FOV), 4 / 3, 0.1f, 100, out projectionMatrix);
             Vector3 up = Vector3.Cross(data.Right, data.Direction);
@@ -108,12 +129,15 @@ namespace UMLProgram.Core.Render.SimpleObject {
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
             GL.EnableVertexAttribArray(1);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, textureUVHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, uvBufferHandle);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
+            GL.EnableVertexAttribArray(2);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, normalBufferHandle);
+            GL.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
             GL.DrawArrays(PrimitiveType.Triangles, 0, vertexCount);
+            GL.DisableVertexAttribArray(2);
             GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);
         }
-
     }
 }
