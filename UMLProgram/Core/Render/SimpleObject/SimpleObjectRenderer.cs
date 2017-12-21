@@ -50,15 +50,9 @@ namespace UMLProgram.Core.Render.SimpleObject {
             return BlenderLoader.Load(file);
         }
         private static void CreateBuffersForShaders(IndexedObj model) {
-            //BufferIndices(model.Indices);
             BufferVertices(model.Vertices);
             BufferUVs(model.UVs);
             BufferNormals(model.Normals);
-        }
-        private static void BufferIndices(List<int> indices) {
-            GL.GenBuffers(1, out indicesBufferHandle);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, indicesBufferHandle);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Count() * sizeof(int), indices.ToArray(), BufferUsageHint.StaticDraw);
         }
         private static void BufferVertices(List<Vector3> vertices) {
             GL.GenBuffers(1, out vertexBufferHandle);
