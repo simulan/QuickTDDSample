@@ -24,11 +24,16 @@ namespace UMLProgram.Core.Render.SimpleObject.Programs {
             void main(){
                 vec3 n = normalize( Normal_cameraspace );
                 vec3 l = normalize( LightDirection_cameraspace );
+                vec3 E = normalize( EyeDirection_cameraspace );
+                vec3 R = reflect(-l,n);
+
                 float distance = distance(Position_worldspace,light_position_worldspace);           
-                float cosTheta = clamp( dot( n,l ), 0,1 );
-                vec3 diffuseColor = texture( myTextureSampler, UV ).rgb * light_color * light_power * cosTheta / distance * distance;
-                vec3 ambientColor = texture( myTextureSampler, UV ).rgb * vec3(0.1, 0.1, 0.1);
-                color = diffuseColor + ambientColor;
+                float cosTheta = clamp( dot( E,R ), 0,1 );
+                vec3 materialColor = vec3(0.3,0.05,0.1);
+                vec3 diffuseColor = materialColor * light_color * light_power * cosTheta / distance * distance;
+                vec3 ambientColor = materialColor * vec3(0.1, 0.1, 0.1);
+                vec3 specularColor = materialColor * light_color * light_power * pow(cosTheta,5) / (distance * distance);
+                color = diffuseColor + ambientColor + specularColor;
             }
         ";
     }

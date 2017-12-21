@@ -28,6 +28,7 @@ namespace UMLProgram.Core.Loaders.Files {
                     NormalIndices = new Vector3(AsFloat(firstGroup[2]), AsFloat(secondGroup[2]), AsFloat(thirdGroup[2]));
                 }
                 private static float AsFloat(string number) {
+                if (number.Equals("")) return 0;
                     return float.Parse(number, CultureInfo.InvariantCulture);
                 }
             }

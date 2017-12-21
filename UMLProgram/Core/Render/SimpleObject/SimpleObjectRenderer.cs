@@ -17,7 +17,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
         private static Matrix4 projectionMatrix, viewMatrix, modelMatrix;
         private static Vector3 lightColorUniform = new Vector3(0.8f, 0.8f, 0.8f);
         private static Vector3 lightPositionUniform = new Vector3(5, 5, 0); 
-        private static int lightPowerUniform = 2;
+        private static int lightPowerUniform = 6;
         private static int vertexBufferHandle,
             uvBufferHandle,
             normalBufferHandle,
@@ -34,7 +34,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
             vertexCount;
 
         public static void Load(Size clientSize) {
-            LoadTexture();
+            //LoadTexture();
             ObjImport importModel = LoadObj();
             vertexCount = importModel.Vertices.Count();
             CreateBuffersForShaders(importModel);
@@ -45,7 +45,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
             textureHandle = DDSLoader.Load(file);
         }
         private static ObjImport LoadObj() {
-            String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\box.obj";
+            String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\ramp.obj";
             return BlenderLoader.Load(file);
         }
         private static void CreateBuffersForShaders(ObjImport model) {

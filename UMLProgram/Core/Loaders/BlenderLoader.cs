@@ -66,7 +66,9 @@ namespace UMLProgram.Core.Loaders {
             ObjImport processedData = new ObjImport(data.Indices.Count*3);
             for(int i=0; i<data.Indices.Count*3; i++ ) {
                 processedData.Vertices[i] = data.Vertices[ (int) data.Indices[(int)(i / 3)].VertexIndices[i % 3]-1];
-                processedData.UVs[i] = data.UVs[(int)data.Indices[(int)(i / 3)].UVIndices[i % 3]-1];
+                if (data.UVs.Count != 0) {
+                    processedData.UVs[i] = data.UVs[(int)data.Indices[(int)(i / 3)].UVIndices[i % 3] - 1];
+                }
                 processedData.Normals[i] = data.Normals[(int)data.Indices[(int)(i / 3)].NormalIndices[i % 3]-1];
             }
             return processedData;
