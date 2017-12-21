@@ -16,11 +16,13 @@ namespace UMLProgram.Core.Render.SimpleObject {
     public class SimpleObjectRenderer {
         private static Matrix4 projectionMatrix, viewMatrix, modelMatrix;
         private static Vector3 lightColorUniform = new Vector3(0.8f, 0.8f, 0.8f);
-        private static Vector3 lightPositionUniform = new Vector3(5, 5, 0); 
+        private static Vector3 lightPositionUniform = new Vector3(5, 5, 0);
+        private static int[] indices;
         private static int lightPowerUniform = 6;
         private static int vertexBufferHandle,
             uvBufferHandle,
             normalBufferHandle,
+            indicesBufferHandle,
             textureHandle,
             vertexShaderHandle,
             fragmentShaderHandle,
@@ -30,13 +32,12 @@ namespace UMLProgram.Core.Render.SimpleObject {
             viewMatrixLocation,
             lightColorUniformLocation,
             lightPowerUniformLocation,
-            lightPositionUniformLocation,
-            vertexCount;
+            lightPositionUniformLocation;
 
         public static void Load(Size clientSize) {
             //LoadTexture();
-            ObjImport importModel = LoadObj();
-            vertexCount = importModel.Vertices.Count();
+            IndexedObj importModel = LoadObj();
+            indices = importModel.Indices.ToArray(); 
             CreateBuffersForShaders(importModel);
             CreateShaders(clientSize);
         }
@@ -44,29 +45,35 @@ namespace UMLProgram.Core.Render.SimpleObject {
             String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\texture.dds";
             textureHandle = DDSLoader.Load(file);
         }
-        private static ObjImport LoadObj() {
-            String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\ramp.obj";
+        private static IndexedObj LoadObj() {
+            String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\box.obj";
             return BlenderLoader.Load(file);
         }
-        private static void CreateBuffersForShaders(ObjImport model) {
+        private static void CreateBuffersForShaders(IndexedObj model) {
+            //BufferIndices(model.Indices);
             BufferVertices(model.Vertices);
             BufferUVs(model.UVs);
             BufferNormals(model.Normals);
         }
-        private static void BufferVertices(Vector3[] vertices) {
+        private static void BufferIndices(List<int> indices) {
+            GL.GenBuffers(1, out indicesBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, indicesBufferHandle);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Count() * sizeof(int), indices.ToArray(), BufferUsageHint.StaticDraw);
+        }
+        private static void BufferVertices(List<Vector3> vertices) {
             GL.GenBuffers(1, out vertexBufferHandle);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
-            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(vertices.Length * Vector3.SizeInBytes), vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(vertices.Count() * Vector3.SizeInBytes), vertices.ToArray(), BufferUsageHint.StaticDraw);
         }
-        private static void BufferUVs(Vector2[] uvs) {
+        private static void BufferUVs(List<Vector2> uvs) {
             GL.GenBuffers(1, out uvBufferHandle);
             GL.BindBuffer(BufferTarget.ArrayBuffer, uvBufferHandle);
-            GL.BufferData<Vector2>(BufferTarget.ArrayBuffer, new IntPtr(uvs.Length * Vector2.SizeInBytes), uvs, BufferUsageHint.StaticDraw);
+            GL.BufferData<Vector2>(BufferTarget.ArrayBuffer, new IntPtr(uvs.Count() * Vector2.SizeInBytes), uvs.ToArray(), BufferUsageHint.StaticDraw);
         }
-        private static void BufferNormals(Vector3[] normals) {
+        private static void BufferNormals(List<Vector3> normals) {
             GL.GenBuffers(1, out normalBufferHandle);
             GL.BindBuffer(BufferTarget.ArrayBuffer, normalBufferHandle);
-            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(normals.Length * Vector3.SizeInBytes), normals, BufferUsageHint.StaticDraw);
+            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(normals.Count() * Vector3.SizeInBytes), normals.ToArray(), BufferUsageHint.StaticDraw);
         }
         private static void CreateShaders(Size clientSize) {
             CompileVertexShader();
@@ -133,8 +140,8 @@ namespace UMLProgram.Core.Render.SimpleObject {
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
             GL.EnableVertexAttribArray(2);
             GL.BindBuffer(BufferTarget.ArrayBuffer, normalBufferHandle);
-            GL.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, vertexCount);
+            GL.VertexAttribPointer(2, 3,  VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
+            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, indices);
             GL.DisableVertexAttribArray(2);
             GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);

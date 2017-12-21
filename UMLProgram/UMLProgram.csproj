@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Core\Input\Controller.cs" />
     <Compile Include="Core\Loaders\BlenderLoader.cs" />
+    <Compile Include="Core\Loaders\Files\IndexedObjImport.cs" />
     <Compile Include="Core\Loaders\Files\ObjImport.cs" />
     <Compile Include="Core\Loaders\Files\DDS.cs" />
     <Compile Include="Core\Loaders\DDSLoader.cs" />

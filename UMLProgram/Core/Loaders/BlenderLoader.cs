@@ -21,10 +21,10 @@ namespace UMLProgram.Core.Loaders {
         private const char WHITESPACE = ' ';
         private const char FACE_INDEX_SEPERATOR = '/';
         
-        public static ObjImport Load(string file) {
+        public static IndexedObj Load(string file) {
             string[] lines = GetContent(file).Split(new Char[] { LINEFEED,CARR_RETURN });
             ObjImportCache temporaryData = ExtractData(lines);
-            ObjImport obj = ProcessData(temporaryData);
+            IndexedObj obj = IndexData(ProcessData(temporaryData));
             return obj;
         }
         private static string GetContent(string file) {
@@ -73,6 +73,34 @@ namespace UMLProgram.Core.Loaders {
             }
             return processedData;
         }
+        private static IndexedObj IndexData(ObjImport data) {
+            IndexedObj result = new IndexedObj();
+            for (int i = 0; i < data.Vertices.Count(); i++) {
+                int indexDuplicate = GetIndex(result, data.Vertices[i], data.UVs[i], data.Normals[i]);
+                if (indexDuplicate > -1) {
+                    result.Indices.Add(indexDuplicate);
+                } else {
+                    result.Indices.Add(result.Vertices.Count);
+                    result.Vertices.Add(data.Vertices[i]);
+                    result.UVs.Add(data.UVs[i]);
+                    result.Normals.Add(data.Normals[i]);
+                }
+            }
+            return result;
+        }
+        private static int GetIndex(IndexedObj output,Vector3 vertex,Vector2 uv,Vector3 normal) {
+            int result = -1;
+            for (int i = 0; i < output.Vertices.Count(); i++) {
+                bool similarVertex = output.Vertices[i].Equals(vertex);
+                bool similarUV = output.UVs[i].Equals(uv);
+                bool similarNormal = output.Normals[i].Equals(normal);
+                if (similarVertex && similarUV && similarNormal) {
+                    return i;
+                }   
+            }
+            return result;
+        }
+
         private static float AsFloat(string number) {
             return float.Parse(number, CultureInfo.InvariantCulture);
         }
