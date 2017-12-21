@@ -31,8 +31,8 @@ namespace UMLProgram.Core.Render.SimpleObject.Programs {
                 float cosTheta = clamp( dot( E,R ), 0,1 );
                 vec3 materialColor = vec3(0.3,0.05,0.1);
                 vec3 diffuseColor = materialColor * light_color * light_power * cosTheta / distance * distance;
-                vec3 ambientColor = materialColor * vec3(0.1, 0.1, 0.1);
-                vec3 specularColor = materialColor * light_color * light_power * pow(cosTheta,5) / (distance * distance);
+                vec3 ambientColor = materialColor * vec3(0.3, 0.3, 0.3);
+                vec3 specularColor = materialColor * light_color * light_power * pow(cosTheta,2) / (distance * distance);
                 color = diffuseColor + ambientColor + specularColor;
             }
         ";
