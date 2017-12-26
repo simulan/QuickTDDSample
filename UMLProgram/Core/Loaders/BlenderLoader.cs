@@ -21,10 +21,10 @@ namespace UMLProgram.Core.Loaders {
         private const char WHITESPACE = ' ';
         private const char FACE_INDEX_SEPERATOR = '/';
         
-        public static IndexedObj Load(string file) {
+        public static IndexedD3Model Load(string file) {
             string[] lines = GetContent(file).Split(new Char[] { LINEFEED,CARR_RETURN });
-            ObjImportCache temporaryData = ExtractData(lines);
-            IndexedObj obj = IndexData(ProcessData(temporaryData));
+            TriIndexedD3Model temporaryData = ExtractData(lines);
+            IndexedD3Model obj = IndexData(ProcessData(temporaryData));
             return obj;
         }
         private static string GetContent(string file) {
@@ -43,8 +43,8 @@ namespace UMLProgram.Core.Loaders {
             }
             return sb.ToString();
         }
-        private static ObjImportCache ExtractData(string[] lines) {
-            ObjImportCache data = new ObjImportCache();
+        private static TriIndexedD3Model ExtractData(string[] lines) {
+            TriIndexedD3Model data = new TriIndexedD3Model();
             foreach (string line in lines) {
                 string[] parts = line.Split(WHITESPACE);
                 if (parts[0].Equals("v")) {
@@ -57,13 +57,13 @@ namespace UMLProgram.Core.Loaders {
                     if (parts.Length > 4) {
                         throw new Exception("Loader does not support complex faces!");
                     }
-                    data.Indices.Add(new ObjImportCache.TriangleIndices(parts[1].Split(FACE_INDEX_SEPERATOR), parts[2].Split(FACE_INDEX_SEPERATOR), parts[3].Split(FACE_INDEX_SEPERATOR)));
+                    data.Indices.Add(new TriIndexedD3Model.TriangleIndices(parts[1].Split(FACE_INDEX_SEPERATOR), parts[2].Split(FACE_INDEX_SEPERATOR), parts[3].Split(FACE_INDEX_SEPERATOR)));
                 }
             }
             return data;
         }
-        private static ObjImport ProcessData(ObjImportCache data) {
-            ObjImport processedData = new ObjImport(data.Indices.Count*3);
+        private static D3Model ProcessData(TriIndexedD3Model data) {
+            D3Model processedData = new D3Model(data.Indices.Count*3);
             for(int i=0; i<data.Indices.Count*3; i++ ) {
                 processedData.Vertices[i] = data.Vertices[ (int) data.Indices[(int)(i / 3)].VertexIndices[i % 3]-1];
                 if (data.UVs.Count != 0) {
@@ -73,27 +73,30 @@ namespace UMLProgram.Core.Loaders {
             }
             return processedData;
         }
-        private static IndexedObj IndexData(ObjImport data) {
-            IndexedObj result = new IndexedObj();
+        private static IndexedD3Model IndexData(D3Model data) {
+            List<int> indices = new List<int>();
+            List<Vector3> vertices = new List<Vector3>();
+            List<Vector2> uvs = new List<Vector2>();
+            List<Vector3> normals = new List<Vector3>();
             for (int i = 0; i < data.Vertices.Count(); i++) {
-                int indexDuplicate = GetIndex(result, data.Vertices[i], data.UVs[i], data.Normals[i]);
+                int indexDuplicate = GetIndex(vertices,uvs,normals, data.Vertices[i], data.UVs[i], data.Normals[i]);
                 if (indexDuplicate > -1) {
-                    result.Indices.Add(indexDuplicate);
+                    indices.Add(indexDuplicate);
                 } else {
-                    result.Indices.Add(result.Vertices.Count);
-                    result.Vertices.Add(data.Vertices[i]);
-                    result.UVs.Add(data.UVs[i]);
-                    result.Normals.Add(data.Normals[i]);
+                    indices.Add(vertices.Count);
+                    vertices.Add(data.Vertices[i]);
+                    uvs.Add(data.UVs[i]);
+                    normals.Add(data.Normals[i]);
                 }
             }
-            return result;
+            return new IndexedD3Model(vertices.ToArray(),uvs.ToArray(), normals.ToArray(), indices.ToArray());
         }
-        private static int GetIndex(IndexedObj output,Vector3 vertex,Vector2 uv,Vector3 normal) {
+        private static int GetIndex(List<Vector3> vertices,List<Vector2> uvs,List<Vector3> normals,Vector3 vertex,Vector2 uv,Vector3 normal) {
             int result = -1;
-            for (int i = 0; i < output.Vertices.Count(); i++) {
-                bool similarVertex = output.Vertices[i].Equals(vertex);
-                bool similarUV = output.UVs[i].Equals(uv);
-                bool similarNormal = output.Normals[i].Equals(normal);
+            for (int i = 0; i < vertices.Count(); i++) {
+                bool similarVertex = vertices[i].Equals(vertex);
+                bool similarUV = uvs[i].Equals(uv);
+                bool similarNormal = normals[i].Equals(normal);
                 if (similarVertex && similarUV && similarNormal) {
                     return i;
                 }   

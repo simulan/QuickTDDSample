@@ -28,7 +28,6 @@ namespace UMLProgram.Core.Loaders {
             GL.BindTexture(TextureTarget.Texture2D, textureHandle);
             LoadMipMaps(dds);
             return textureHandle;
-                
         }
         private static byte[] GetHeaderInBytes(FileStream stream) {
             byte[] result = new byte[HEADER_SIZE];
