@@ -35,7 +35,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
             lightPositionUniformLocation;
 
         public static void Load(Size clientSize) {
-            //LoadTexture();
+            LoadTexture();
             IndexedObj importModel = LoadObj();
             indices = importModel.Indices.ToArray(); 
             CreateBuffersForShaders(importModel);
@@ -46,7 +46,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
             textureHandle = DDSLoader.Load(file);
         }
         private static IndexedObj LoadObj() {
-            String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\ramp.obj";
+            String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\box.obj";
             return BlenderLoader.Load(file);
         }
         private static void CreateBuffersForShaders(IndexedObj model) {
