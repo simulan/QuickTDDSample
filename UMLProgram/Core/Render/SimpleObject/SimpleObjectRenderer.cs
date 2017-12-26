@@ -35,7 +35,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
             lightPositionUniformLocation;
 
         public static void Load(Size clientSize) {
-            //LoadTexture();
+            LoadTexture();
             IndexedObj importModel = LoadObj();
             indices = importModel.Indices.ToArray(); 
             CreateBuffersForShaders(importModel);
