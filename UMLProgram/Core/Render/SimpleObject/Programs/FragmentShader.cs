@@ -34,7 +34,7 @@ namespace UMLProgram.Core.Render.SimpleObject.Programs {
                 vec3 diffuseColor = materialColor * light_color * light_power * cosTheta / distance * distance;
                 vec3 ambientColor = materialColor * vec3(0.3, 0.3, 0.3);
                 vec3 specularColor = materialColor * light_color * light_power * pow(cosTheta,2) / (distance * distance);
-                color = vec3(1.0,0.0,0.0);
+                color = diffuseColor+ambientColor+specularColor;
             }
         ";
     } //diffuseColor + ambientColor + specularColor;

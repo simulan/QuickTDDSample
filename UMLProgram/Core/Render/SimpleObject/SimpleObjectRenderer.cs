@@ -22,6 +22,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
         private static Vector3 lightPositionUniform = new Vector3(5, 5, 0);
         private static int modelKey;
         private static int lightPowerUniform = 6;
+        private static int[] indices;
         private static int textureHandle,
             vertexArrayHandle,
             shaderProgramHandle,
@@ -30,19 +31,40 @@ namespace UMLProgram.Core.Render.SimpleObject {
             viewMatrixLocation,
             lightColorUniformLocation,
             lightPowerUniformLocation,
+            vertexBufferHandle,
+            uvBufferHandle,
+            normalBufferHandle,
             lightPositionUniformLocation;
 
         public static void Load(Size clientSize) {
-            CreateVertexArray();
-            shaderProgramHandle = ShaderProgram.Create(VertexShader.Text, FragmentShader.Text);
-            BindShaderData(clientSize);
             LoadTexture();
-            GL.UseProgram(shaderProgramHandle);
-            modelKey = modelBuffer.Add(LoadObj());
+            IndexedD3Model model = LoadObj();
+            CreateVertexArray();
+            BufferVertices(model.Vertices);
+            BufferUVs(model.UVs);
+            BufferNormals(model.Normals);
+            indices = model.Indices;
+            BindShaderData(clientSize);
+            shaderProgramHandle = ShaderProgram.Create(VertexShader.Text, FragmentShader.Text);
         }
         private static void CreateVertexArray() {
             vertexArrayHandle = GL.GenVertexArray();
             GL.BindVertexArray(vertexArrayHandle);
+        }
+        private static void BufferVertices(Vector3[] vertices) {
+            GL.GenBuffers(1, out vertexBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
+            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(vertices.Count() * Vector3.SizeInBytes), vertices, BufferUsageHint.StaticDraw);
+        }
+        private static void BufferUVs(Vector2[] uvs) {
+            GL.GenBuffers(1, out uvBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, uvBufferHandle);
+            GL.BufferData<Vector2>(BufferTarget.ArrayBuffer, new IntPtr(uvs.Count() * Vector2.SizeInBytes), uvs, BufferUsageHint.StaticDraw);
+        }
+        private static void BufferNormals(Vector3[] normals) {
+            GL.GenBuffers(1, out normalBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, normalBufferHandle);
+            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(normals.Count() * Vector3.SizeInBytes), normals, BufferUsageHint.StaticDraw);
         }
         private static void LoadTexture() {
             String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\texture.dds";
@@ -87,15 +109,15 @@ namespace UMLProgram.Core.Render.SimpleObject {
         }
         public static void Draw() {
             GL.EnableVertexAttribArray(0);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, modelBuffer[modelKey].Item2.vertex);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
             GL.EnableVertexAttribArray(1);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, modelBuffer[modelKey].Item2.uv);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, uvBufferHandle);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
             GL.EnableVertexAttribArray(2);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, modelBuffer[modelKey].Item2.normal);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, normalBufferHandle);
             GL.VertexAttribPointer(2, 3,  VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
-            GL.DrawElements(PrimitiveType.Triangles, modelBuffer[modelKey].Item1.Indices.Length, DrawElementsType.UnsignedInt, modelBuffer[modelKey].Item1.Indices);
+            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, indices);
             GL.DisableVertexAttribArray(2);
             GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);

@@ -31,9 +31,8 @@ namespace UMLProgram.Core {
             CalculateInnerWindow();
             VSync = VSyncMode.On;
             GL.Enable(EnableCap.DepthTest);
-            GL.ClearColor(Color.MidnightBlue);
             SimpleObjectRenderer.Load(ClientSize);
-            //Text2DRenderer.Load("C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\holstein.dds");
+            GL.ClearColor(Color.MidnightBlue);
             Closed += UmlWindow_Closed;
         }
         private void UmlWindow_Closed(object sender, EventArgs e) {
@@ -59,7 +58,6 @@ namespace UMLProgram.Core {
             controller.CalculateChanges(e.Time, new Point(Mouse.X, Mouse.Y),Mouse.Wheel,Keyboard.GetState());
             SimpleObjectRenderer.Draw();
             SimpleObjectRenderer.Update(controller.Data);
-            //Text2DRenderer.Print("Hellow world", 10, 500, 60);
             OpenTK.Input.Mouse.SetPosition(innerWindow.Left + (Width / 2), innerWindow.Top + (Height / 2));
             SwapBuffers();
             if (Keyboard.GetState().IsKeyDown(OpenTK.Input.Key.Escape)) {

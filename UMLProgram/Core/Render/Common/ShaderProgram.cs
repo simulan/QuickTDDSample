@@ -34,6 +34,7 @@ namespace UMLProgram.Core.Render.Common {
             GL.AttachShader(shaderProgramHandle, vertexShaderHandle);
             GL.AttachShader(shaderProgramHandle, fragmentShaderHandle);
             GL.LinkProgram(shaderProgramHandle);
+            GL.UseProgram(shaderProgramHandle);
             Trace.WriteLine(GL.GetProgramInfoLog(shaderProgramHandle));
             return shaderProgramHandle;
         }
