@@ -26,6 +26,8 @@ namespace UMLProgram.Core.Render.SimpleObject {
         private static int textureHandle,
             vertexArrayHandle,
             shaderProgramHandle,
+            vertexShaderHandle,
+            fragmentShaderHandle,
             projectionMatrixLocation,
             modelMatrixLocation,
             viewMatrixLocation,
@@ -43,13 +45,42 @@ namespace UMLProgram.Core.Render.SimpleObject {
             BufferVertices(model.Vertices);
             BufferUVs(model.UVs);
             BufferNormals(model.Normals);
+
             indices = model.Indices;
-            BindShaderData(clientSize);
-            shaderProgramHandle = ShaderProgram.Create(VertexShader.Text, FragmentShader.Text);
+            CreateShaders(clientSize);
+            //BindShaderData(clientSize);
+            //shaderProgramHandle = ShaderProgram.Create(VertexShader.Text, FragmentShader.Text);
         }
         private static void CreateVertexArray() {
             vertexArrayHandle = GL.GenVertexArray();
             GL.BindVertexArray(vertexArrayHandle);
+        }
+        private static void CreateShaders(Size clientSize) {
+            CompileVertexShader();
+            CompileFragmentShader();
+            SetShaderProgram();
+            SupplyShaderMatrices(clientSize);
+            SupplyShaderVars();
+        }
+        private static void CompileVertexShader() {
+            vertexShaderHandle = GL.CreateShader(ShaderType.VertexShader);
+            GL.ShaderSource(vertexShaderHandle, VertexShader.Text);
+            GL.CompileShader(vertexShaderHandle);
+            Trace.WriteLine(GL.GetShaderInfoLog(vertexShaderHandle));
+        }
+        private static void CompileFragmentShader() {
+            fragmentShaderHandle = GL.CreateShader(ShaderType.FragmentShader);
+            GL.ShaderSource(fragmentShaderHandle, FragmentShader.Text);
+            GL.CompileShader(fragmentShaderHandle);
+            Trace.WriteLine(GL.GetShaderInfoLog(fragmentShaderHandle));
+        }
+        private static void SetShaderProgram() {
+            shaderProgramHandle = GL.CreateProgram();
+            GL.AttachShader(shaderProgramHandle, vertexShaderHandle);
+            GL.AttachShader(shaderProgramHandle, fragmentShaderHandle);
+            GL.LinkProgram(shaderProgramHandle);
+            GL.UseProgram(shaderProgramHandle);
+            Trace.WriteLine(GL.GetProgramInfoLog(shaderProgramHandle));
         }
         private static void BufferVertices(Vector3[] vertices) {
             GL.GenBuffers(1, out vertexBufferHandle);
