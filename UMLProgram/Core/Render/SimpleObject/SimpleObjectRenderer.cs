@@ -10,22 +10,20 @@ using System.Threading.Tasks;
 using UMLProgram.Core.Input;
 using UMLProgram.Core.Loaders;
 using UMLProgram.Core.Loaders.Files;
+using UMLProgram.Core.Render.Common;
+using UMLProgram.Core.Render.Cube;
 using UMLProgram.Core.Render.SimpleObject.Programs;
 
 namespace UMLProgram.Core.Render.SimpleObject {
     public class SimpleObjectRenderer {
+        private static ModelBuffer modelBuffer = new ModelBuffer();
         private static Matrix4 projectionMatrix, viewMatrix, modelMatrix;
         private static Vector3 lightColorUniform = new Vector3(0.8f, 0.8f, 0.8f);
         private static Vector3 lightPositionUniform = new Vector3(5, 5, 0);
-        private static int[] indices;
+        private static int modelKey;
         private static int lightPowerUniform = 6;
-        private static int vertexBufferHandle,
-            uvBufferHandle,
-            normalBufferHandle,
-            indicesBufferHandle,
-            textureHandle,
-            vertexShaderHandle,
-            fragmentShaderHandle,
+        private static int textureHandle,
+            vertexArrayHandle,
             shaderProgramHandle,
             projectionMatrixLocation,
             modelMatrixLocation,
@@ -34,67 +32,33 @@ namespace UMLProgram.Core.Render.SimpleObject {
             lightPowerUniformLocation,
             lightPositionUniformLocation;
 
+        public static void Activate() {
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, textureHandle);
+            GL.UseProgram(shaderProgramHandle);
+        }
         public static void Load(Size clientSize) {
             LoadTexture();
-            IndexedObj importModel = LoadObj();
-            indices = importModel.Indices.ToArray(); 
-            CreateBuffersForShaders(importModel);
-            CreateShaders(clientSize);
+            CreateVertexArray();
+            modelKey = modelBuffer.Add(LoadObj());
+            shaderProgramHandle = ShaderProgram.Create(VertexShader.Text, FragmentShader.Text);
+            BindShaderData(clientSize);
+        }
+        private static void CreateVertexArray() {
+            vertexArrayHandle = GL.GenVertexArray();
+            GL.BindVertexArray(vertexArrayHandle);
         }
         private static void LoadTexture() {
             String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\texture.dds";
             textureHandle = DDSLoader.Load(file);
         }
-        private static IndexedObj LoadObj() {
+        private static IndexedD3Model LoadObj() {
             String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\box.obj";
             return BlenderLoader.Load(file);
         }
-        private static void CreateBuffersForShaders(IndexedObj model) {
-            BufferVertices(model.Vertices);
-            BufferUVs(model.UVs);
-            BufferNormals(model.Normals);
-        }
-        private static void BufferVertices(List<Vector3> vertices) {
-            GL.GenBuffers(1, out vertexBufferHandle);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
-            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(vertices.Count() * Vector3.SizeInBytes), vertices.ToArray(), BufferUsageHint.StaticDraw);
-        }
-        private static void BufferUVs(List<Vector2> uvs) {
-            GL.GenBuffers(1, out uvBufferHandle);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, uvBufferHandle);
-            GL.BufferData<Vector2>(BufferTarget.ArrayBuffer, new IntPtr(uvs.Count() * Vector2.SizeInBytes), uvs.ToArray(), BufferUsageHint.StaticDraw);
-        }
-        private static void BufferNormals(List<Vector3> normals) {
-            GL.GenBuffers(1, out normalBufferHandle);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, normalBufferHandle);
-            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, new IntPtr(normals.Count() * Vector3.SizeInBytes), normals.ToArray(), BufferUsageHint.StaticDraw);
-        }
-        private static void CreateShaders(Size clientSize) {
-            CompileVertexShader();
-            CompileFragmentShader();
-            SetShaderProgram();
+        private static void BindShaderData(Size clientSize) {
             SupplyShaderMatrices(clientSize);
             SupplyShaderVars();
-        }
-        private static void CompileVertexShader() {
-            vertexShaderHandle = GL.CreateShader(ShaderType.VertexShader);
-            GL.ShaderSource(vertexShaderHandle, VertexShader.Text);
-            GL.CompileShader(vertexShaderHandle);
-            Trace.WriteLine(GL.GetShaderInfoLog(vertexShaderHandle));
-        }
-        private static void CompileFragmentShader() {
-            fragmentShaderHandle = GL.CreateShader(ShaderType.FragmentShader);
-            GL.ShaderSource(fragmentShaderHandle, FragmentShader.Text);
-            GL.CompileShader(fragmentShaderHandle);
-            Trace.WriteLine(GL.GetShaderInfoLog(fragmentShaderHandle));
-        }
-        private static void SetShaderProgram() {
-            shaderProgramHandle = GL.CreateProgram();
-            GL.AttachShader(shaderProgramHandle, vertexShaderHandle);
-            GL.AttachShader(shaderProgramHandle, fragmentShaderHandle);
-            GL.LinkProgram(shaderProgramHandle);
-            GL.UseProgram(shaderProgramHandle);
-            Trace.WriteLine(GL.GetProgramInfoLog(shaderProgramHandle));
         }
         private static void SupplyShaderMatrices(Size clientSize) {
             projectionMatrixLocation = GL.GetUniformLocation(shaderProgramHandle, "projection_matrix");
@@ -116,7 +80,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
             lightPositionUniformLocation = GL.GetUniformLocation(shaderProgramHandle, "light_position_worldspace");
             GL.Uniform3(lightColorUniformLocation, ref lightColorUniform); 
             GL.Uniform1(lightPowerUniformLocation, lightPowerUniform);
-            GL.Uniform3(lightPositionUniformLocation, lightPositionUniform);
+            GL.Uniform3(lightPositionUniformLocation, ref lightPositionUniform);
         }
         public static void Update(Controller.ControllerData data) {
             Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(data.FOV), 4 / 3, 0.1f, 100, out projectionMatrix);
@@ -127,18 +91,24 @@ namespace UMLProgram.Core.Render.SimpleObject {
         }
         public static void Draw() {
             GL.EnableVertexAttribArray(0);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, modelBuffer[modelKey].Item2.vertex);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
             GL.EnableVertexAttribArray(1);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, uvBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, modelBuffer[modelKey].Item2.uv);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
             GL.EnableVertexAttribArray(2);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, normalBufferHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, modelBuffer[modelKey].Item2.normal);
             GL.VertexAttribPointer(2, 3,  VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
-            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, indices);
+            GL.DrawElements(PrimitiveType.Triangles, modelBuffer[modelKey].Item1.Indices.Length, DrawElementsType.UnsignedInt, modelBuffer[modelKey].Item1.Indices);
             GL.DisableVertexAttribArray(2);
             GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);
+        }
+        public static void Clear() {
+            GL.DeleteBuffers(3, new int[] { modelBuffer[modelKey].Item2.vertex, modelBuffer[modelKey].Item2.uv, modelBuffer[modelKey].Item2.normal});
+            GL.DeleteTexture(textureHandle);
+            GL.DeleteProgram(shaderProgramHandle);
+            GL.DeleteVertexArray(vertexArrayHandle);
         }
     }
 }

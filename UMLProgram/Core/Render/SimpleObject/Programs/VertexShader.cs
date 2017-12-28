@@ -26,7 +26,6 @@ namespace UMLProgram.Core.Render.SimpleObject.Programs {
 
             void main(){
                 gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertexPosition_modelspace, 1);
-                UV=vertexUV;
 
                 Position_worldspace = (model_matrix * vec4(vertexPosition_modelspace, 1)).xyz;
                 vec3 vertexPosition_cameraspace = ( view_matrix * model_matrix * vec4(vertexPosition_modelspace,1)).xyz;
@@ -35,6 +34,7 @@ namespace UMLProgram.Core.Render.SimpleObject.Programs {
                 LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspace;
 
                 Normal_cameraspace = ( view_matrix * model_matrix * vec4(vertexNormal_modelspace,0) ).xyz; 
+                UV = vertexUV;
             }
         ";
     }

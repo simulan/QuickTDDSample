@@ -29,12 +29,12 @@ namespace UMLProgram.Core.Render.SimpleObject.Programs {
 
                 float distance = distance(Position_worldspace,light_position_worldspace);           
                 float cosTheta = clamp( dot( E,R ), 0,1 );
-                vec3 materialColor = texture( myTextureSampler, UV).rgb;
+                vec3 materialColor = texture( myTextureSampler, UV ).rgb;
                 vec3 diffuseColor = materialColor * light_color * light_power * cosTheta / distance * distance;
                 vec3 ambientColor = materialColor * vec3(0.3, 0.3, 0.3);
                 vec3 specularColor = materialColor * light_color * light_power * pow(cosTheta,2) / (distance * distance);
-                color = diffuseColor + ambientColor + specularColor;
+                color = diffuseColor+ambientColor+specularColor;
             }
         ";
-    }
+    } 
 }
