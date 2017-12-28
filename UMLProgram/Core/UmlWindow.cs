@@ -32,6 +32,7 @@ namespace UMLProgram.Core {
             VSync = VSyncMode.On;
             GL.Enable(EnableCap.DepthTest);
             SimpleObjectRenderer.Load(ClientSize);
+            Text2DRenderer.Load("C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\holstein.dds");
             GL.ClearColor(Color.MidnightBlue);
             Closed += UmlWindow_Closed;
         }
@@ -56,8 +57,10 @@ namespace UMLProgram.Core {
             GL.Viewport(0, 0, Width, Height);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             controller.CalculateChanges(e.Time, new Point(Mouse.X, Mouse.Y),Mouse.Wheel,Keyboard.GetState());
+            SimpleObjectRenderer.Activate();
             SimpleObjectRenderer.Draw();
             SimpleObjectRenderer.Update(controller.Data);
+            Text2DRenderer.Print("fucking finally", 10, 80, 50);
             OpenTK.Input.Mouse.SetPosition(innerWindow.Left + (Width / 2), innerWindow.Top + (Height / 2));
             SwapBuffers();
             if (Keyboard.GetState().IsKeyDown(OpenTK.Input.Key.Escape)) {

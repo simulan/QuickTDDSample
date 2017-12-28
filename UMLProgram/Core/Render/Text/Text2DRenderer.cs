@@ -24,16 +24,24 @@ namespace UMLProgram.Core.Render.Text {
             shaderProgramHandle = ShaderProgram.Create(VertexShader.Text, FragmentShader.Text);
             textureHandle = DDSLoader.Load(ddsTexture);
         }
-        public static void Draw() {
+        private static void Activate() {
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, textureHandle);
+            GL.UseProgram(shaderProgramHandle);
+        }
+        private static void Draw() {
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
             GL.EnableVertexAttribArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferHandle);
-            GL.VertexAttribPointer(0, 1, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
+            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
             GL.EnableVertexAttribArray(1);
             GL.BindBuffer(BufferTarget.ArrayBuffer, uvBufferHandle);
-            GL.VertexAttribPointer(0, 1, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0);
             GL.DrawArrays(PrimitiveType.Triangles, 0, vertices.Length);
             GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);
+            GL.Disable(EnableCap.Blend);
         }
         public static void Print(string text, int x, int y, int size) {
             vertices = new Vector2[text.Length*VERTICES_CHAR];
@@ -41,6 +49,7 @@ namespace UMLProgram.Core.Render.Text {
             GenerateVerticesAndUVs(text, x, y, size);
             BufferVertices();
             BufferUVs();
+            Activate();
             Draw();
         }
         private static void GenerateVerticesAndUVs(string text, int x, int y, int size) {
@@ -57,12 +66,13 @@ namespace UMLProgram.Core.Render.Text {
                 vertices[vertexIndex + 3] = rightBottom;
                 vertices[vertexIndex + 4] = rightTop;
                 vertices[vertexIndex + 5] = leftBottom;
-                float uvX = c % 16 / 16.0f;
-                float uvY = c / 16 / 16.0f;
-                Vector2 uvLeftTop = new Vector2(uvX, 1.0f - uvY);
-                Vector2 uvRightTop = new Vector2(uvX + 1.0f / 16.0f, 1.0f - uvY);
-                Vector2 uvRightBottom = new Vector2(uvX + 1.0f / 16.0f, 1.0f - (uvY + 1.0f / 16.0f));
-                Vector2 uvLeftBottom = new Vector2(uvX, 1.0f - (uvY + 1.0f / 16.0f));
+                float uvX = (c % 16) / 16.0f;
+                float uvY = (c / 16) / 16.0f;
+                float unit = 1.0f / 16;
+                Vector2 uvLeftTop = new Vector2(uvX, uvY);
+                Vector2 uvRightTop = new Vector2(uvX+unit, uvY);
+                Vector2 uvRightBottom = new Vector2(uvX+unit, uvY+unit);
+                Vector2 uvLeftBottom = new Vector2(uvX, uvY+unit);
                 uvs[vertexIndex] = uvLeftTop;
                 uvs[vertexIndex + 1] = uvLeftBottom;
                 uvs[vertexIndex + 2] = uvRightTop;

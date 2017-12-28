@@ -57,6 +57,7 @@ namespace UMLProgram.Core.Loaders {
                 throw new IOException(stream.Name + " does not support reading atm.");
             }
         }
+        //warning should define MAX_MIPMAP_LEVELS AND MIN HERE
         private static void LoadMipMaps(DDS file) {
             int blockSize = (file.header.Format==(int)PixelInternalFormat.CompressedRgbaS3tcDxt1Ext) ? 8 : 16;
             int offset = 0;
