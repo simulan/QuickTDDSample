@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Core\Input\Controller.cs" />
     <Compile Include="Core\Loaders\BlenderLoader.cs" />
+    <Compile Include="Core\Loaders\BMPLoader.cs" />
+    <Compile Include="Core\Loaders\Files\BMP.cs" />
     <Compile Include="Core\Loaders\Files\IndexedD3Model.cs" />
     <Compile Include="Core\Loaders\Files\D3Model.cs" />
     <Compile Include="Core\Loaders\Files\DDS.cs" />
