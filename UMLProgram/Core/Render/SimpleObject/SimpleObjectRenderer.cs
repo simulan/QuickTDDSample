@@ -41,6 +41,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
             LoadTexture();
             CreateVertexArray();
             modelKey = modelBuffer.Add(LoadObj());
+            
             shaderProgramHandle = ShaderProgram.Create(VertexShader.Text, FragmentShader.Text);
             BindShaderData(clientSize);
         }
@@ -54,7 +55,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
         }
         private static IndexedD3Model LoadObj() {
             String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\box.obj";
-            return ModelWorker.IndexData(BlenderLoader.Load(file));
+            return ModelWorker.IndexData( BlenderLoader.Load(file));
         }
         private static void BindShaderData(Size clientSize) {
             SupplyShaderMatrices(clientSize);

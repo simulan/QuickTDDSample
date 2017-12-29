@@ -12,6 +12,7 @@ namespace UMLProgram.Core.Loaders.Files {
         public Vector2[] UVs;
         public Vector3[] Normals;
 
+        public D3Model() {}
         public D3Model(int capacity) {
             Vertices = new Vector3[capacity];
             UVs = new Vector2[capacity];

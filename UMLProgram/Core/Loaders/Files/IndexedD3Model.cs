@@ -12,6 +12,8 @@ namespace UMLProgram.Core.Loaders.Files {
         public Vector3[] Normals;
         public int[] Indices;
 
+        public IndexedD3Model() { }
+
         public IndexedD3Model(Vector3[] vertices,Vector2[] uvs,Vector3[] normals,int[] indices) {
             Vertices = vertices;
             UVs = uvs;
