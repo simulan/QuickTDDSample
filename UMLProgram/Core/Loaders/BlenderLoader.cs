@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System;
 using UMLProgram.Core.Loaders;
 using OpenTK;
 using System.Globalization;
@@ -21,11 +20,10 @@ namespace UMLProgram.Core.Loaders {
         private const char WHITESPACE = ' ';
         private const char FACE_INDEX_SEPERATOR = '/';
         
-        public static IndexedD3Model Load(string file) {
+        public static D3Model Load(string file) {
             string[] lines = GetContent(file).Split(new Char[] { LINEFEED,CARR_RETURN });
             TriIndexedD3Model temporaryData = ExtractData(lines);
-            IndexedD3Model obj = IndexData(ProcessData(temporaryData));
-            return obj;
+            return ProcessData(temporaryData);
         }
         private static string GetContent(string file) {
             byte[] readBuffer = new byte[MAX_LINE_CHARS];
@@ -72,36 +70,6 @@ namespace UMLProgram.Core.Loaders {
                 processedData.Normals[i] = data.Normals[(int)data.Indices[(int)(i / 3)].NormalIndices[i % 3]-1];
             }
             return processedData;
-        }
-        private static IndexedD3Model IndexData(D3Model data) {
-            List<int> indices = new List<int>();
-            List<Vector3> vertices = new List<Vector3>();
-            List<Vector2> uvs = new List<Vector2>();
-            List<Vector3> normals = new List<Vector3>();
-            for (int i = 0; i < data.Vertices.Count(); i++) {
-                int indexDuplicate = GetIndex(vertices,uvs,normals, data.Vertices[i], data.UVs[i], data.Normals[i]);
-                if (indexDuplicate > -1) {
-                    indices.Add(indexDuplicate);
-                } else {
-                    indices.Add(vertices.Count);
-                    vertices.Add(data.Vertices[i]);
-                    uvs.Add(data.UVs[i]);
-                    normals.Add(data.Normals[i]);
-                }
-            }
-            return new IndexedD3Model(vertices.ToArray(),uvs.ToArray(), normals.ToArray(), indices.ToArray());
-        }
-        private static int GetIndex(List<Vector3> vertices,List<Vector2> uvs,List<Vector3> normals,Vector3 vertex,Vector2 uv,Vector3 normal) {
-            int result = -1;
-            for (int i = 0; i < vertices.Count(); i++) {
-                bool similarVertex = vertices[i].Equals(vertex);
-                bool similarUV = uvs[i].Equals(uv);
-                bool similarNormal = normals[i].Equals(normal);
-                if (similarVertex && similarUV && similarNormal) {
-                    return i;
-                }   
-            }
-            return result;
         }
 
         private static float AsFloat(string number) {

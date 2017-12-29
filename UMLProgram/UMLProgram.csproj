@@ -62,6 +62,7 @@
     <Compile Include="Core\Render\ColorCube\Programs\FragmentShader.cs" />
     <Compile Include="Core\Render\ColorCube\Programs\VertexShader.cs" />
     <Compile Include="Core\Render\Common\ModelBuffer.cs" />
+    <Compile Include="Core\Render\Common\ModelWorker.cs" />
     <Compile Include="Core\Render\Common\ShaderProgram.cs" />
     <Compile Include="Core\Render\Cube\CubeRenderer.cs" />
     <Compile Include="Core\Render\Cube\CubeVertexData.cs" />

@@ -54,7 +54,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
         }
         private static IndexedD3Model LoadObj() {
             String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\box.obj";
-            return BlenderLoader.Load(file);
+            return ModelWorker.IndexData(BlenderLoader.Load(file));
         }
         private static void BindShaderData(Size clientSize) {
             SupplyShaderMatrices(clientSize);
