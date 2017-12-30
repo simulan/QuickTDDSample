@@ -38,7 +38,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
             GL.UseProgram(shaderProgramHandle);
         }
         public static void Load(Size clientSize) {
-            LoadTexture();
+            LoadTextures();
             CreateVertexArray();
             modelKey = modelBuffer.Add(LoadObj());
             
@@ -49,7 +49,7 @@ namespace UMLProgram.Core.Render.SimpleObject {
             vertexArrayHandle = GL.GenVertexArray();
             GL.BindVertexArray(vertexArrayHandle);
         }
-        private static void LoadTexture() {
+        private static void LoadTextures() {
             String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\texture.dds";
             textureHandle = DDSLoader.Load(file);
         }
