@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using UMLProgram.Core.Input;
 using UMLProgram.Core.Render.ColorCube;
 using UMLProgram.Core.Render.Cube;
+using UMLProgram.Core.Render.NormalMap;
 using UMLProgram.Core.Render.Rectangle;
 using UMLProgram.Core.Render.SimpleObject;
 using UMLProgram.Core.Render.Text;
@@ -31,14 +32,12 @@ namespace UMLProgram.Core {
             CalculateInnerWindow();
             VSync = VSyncMode.On;
             GL.Enable(EnableCap.DepthTest);
-            SimpleObjectRenderer.Load(ClientSize);
-            Text2DRenderer.Load("C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\holstein.dds");
+            NormalMapRenderer.Load(ClientSize);
             GL.ClearColor(Color.MidnightBlue);
             Closed += UmlWindow_Closed;
         }
         private void UmlWindow_Closed(object sender, EventArgs e) {
-            SimpleObjectRenderer.Clear();
-            Text2DRenderer.Clear();
+            NormalMapRenderer.Clear();
         }
 
         private void CalculateInnerWindow() {
@@ -57,10 +56,8 @@ namespace UMLProgram.Core {
             GL.Viewport(0, 0, Width, Height);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             controller.CalculateChanges(e.Time, new Point(Mouse.X, Mouse.Y),Mouse.Wheel,Keyboard.GetState());
-            SimpleObjectRenderer.Activate();
-            SimpleObjectRenderer.Draw();
-            SimpleObjectRenderer.Update(controller.Data);
-            Text2DRenderer.Print("fucking finally", 10, 80, 50);
+            NormalMapRenderer.Draw();
+            NormalMapRenderer.Update(controller.Data);
             OpenTK.Input.Mouse.SetPosition(innerWindow.Left + (Width / 2), innerWindow.Top + (Height / 2));
             SwapBuffers();
             if (Keyboard.GetState().IsKeyDown(OpenTK.Input.Key.Escape)) {

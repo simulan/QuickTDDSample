@@ -41,8 +41,8 @@ namespace UMLProgram.Core.Render.Common {
                 int indexDuplicate = GetIndex(vertices, uvs, normals, data.Vertices[i], data.UVs[i], data.Normals[i]);
                 if (indexDuplicate > -1) {
                     indices.Add(indexDuplicate);
-                    tan[i] += data.Tangents[i];
-                    bitan[i] += data.Bitangents[i];
+                    tan[indexDuplicate] += data.Tangents[i];
+                    bitan[indexDuplicate] += data.Bitangents[i];
                 } else {
                     indices.Add(vertices.Count);
                     vertices.Add(data.Vertices[i]);
@@ -78,6 +78,9 @@ namespace UMLProgram.Core.Render.Common {
                 result.Bitangents[i + 1] = bitan;
                 result.Bitangents[i + 2] = bitan;
             }
+            result.Vertices = data.Vertices;
+            result.UVs = data.UVs;
+            result.Normals = data.Normals;
             return result;
         }
         private static int GetIndex(List<Vector3> vertices, List<Vector2> uvs, List<Vector3> normals, Vector3 vertex, Vector2 uv, Vector3 normal) {

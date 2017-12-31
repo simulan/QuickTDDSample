@@ -14,7 +14,7 @@ using static UMLProgram.Core.Input.Controller;
 
 namespace UMLProgram.Core.Render.NormalMap {
     public class NormalMapRenderer {
-        private static ModelBuffer2 modelBuffer;
+        private static ModelBuffer2 modelBuffer = new ModelBuffer2();
         private static Matrix4 projectionMatrix, viewMatrix, modelMatrix;
         private static Vector3 lightColorUniform = new Vector3(0.8f, 0.8f, 0.8f);
         private static Vector3 lightPositionUniform = new Vector3(5, 5, 0);
@@ -52,12 +52,17 @@ namespace UMLProgram.Core.Render.NormalMap {
             normalMapHandle = BMPLoader.Load(normalMap);
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, textureHandle);
+            GL.Uniform1(textureHandle, 0);
             GL.ActiveTexture(TextureUnit.Texture1);
             GL.BindTexture(TextureTarget.Texture2D, normalMapHandle);
+            GL.Uniform1(normalMapHandle, 1);
+
         }
         private static IndexedD3Model2 LoadObj() {
             String file = "C:\\Work\\My CSharp\\UMLcreator\\UMLProgram\\cylinder.obj";
-            return ModelWorker.GetIndexedModelWithTangents(BlenderLoader.Load(file));
+            D3Model mod = BlenderLoader.Load(file);
+            IndexedD3Model2 m =  ModelWorker.GetIndexedModelWithTangents(mod);
+            return m;
         }
         private static void BindShaderData(Size clientSize) {
             SupplyShaderMatrices(clientSize);

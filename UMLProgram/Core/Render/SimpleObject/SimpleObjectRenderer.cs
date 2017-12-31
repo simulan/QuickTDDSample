@@ -41,7 +41,6 @@ namespace UMLProgram.Core.Render.SimpleObject {
             LoadTextures();
             CreateVertexArray();
             modelKey = modelBuffer.Add(LoadObj());
-            
             shaderProgramHandle = ShaderProgram.Create(VertexShader.Text, FragmentShader.Text);
             BindShaderData(clientSize);
         }

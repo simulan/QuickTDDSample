@@ -27,9 +27,10 @@ namespace UMLProgram.Core.Render.NormalMap.programs {
             out vec3 LightDirection_tangentspace;
 
             void main(){
+                mat4 MV4x4 = view_matrix * model_matrix;
                 gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertexPosition_modelspace, 1);
 
-                mat3 MV3x3 = mat3(view_matrix * model_matrix);
+                mat3 MV3x3 = mat3(MV4x4);
                 vec3 vertexNormal_cameraspace = MV3x3 * normalize(vertexNormal_modelspace);
                 vec3 vertexTangent_cameraspace = MV3x3 * normalize(vertexTangent_modelspace);
                 vec3 vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
@@ -37,19 +38,18 @@ namespace UMLProgram.Core.Render.NormalMap.programs {
                 mat3 TBN = transpose(mat3(
                     vertexTangent_cameraspace,
                     vertexBitangent_cameraspace,
-                    vertexNormal_cameraspace,
+                    vertexNormal_cameraspace
                 ));
 
                 Position_worldspace = (model_matrix * vec4(vertexPosition_modelspace, 1)).xyz;
-                vec3 vertexPosition_cameraspace = ( view_matrix * model_matrix * vec4(vertexPosition_modelspace,1)).xyz;
+                vec3 vertexPosition_cameraspace = (view_matrix * model_matrix * vec4(vertexPosition_modelspace,1)).xyz;
                 vec3 EyeDirection_cameraspace = vec3(0,0,0) - vertexPosition_cameraspace;
-                vec3 LightPosition_cameraspace = ( view_matrix * vec4(light_position_worldspace,1) ).xyz;
+                vec3 LightPosition_cameraspace = (view_matrix * vec4(light_position_worldspace,1)).xyz;
                 vec3 LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspace;
-                vec3 Normal_cameraspace = ( view_matrix * model_matrix * vec4(vertexNormal_modelspace,0) ).xyz; 
+                vec3 Normal_cameraspace = (view_matrix * model_matrix * vec4(vertexNormal_modelspace,0)).xyz; 
 
                 LightDirection_tangentspace = TBN * LightDirection_cameraspace;
                 EyeDirection_tangentspace = TBN * EyeDirection_cameraspace;
-                Normal_tangentspace = TBN * Normal_cameraspace;
 
                 UV = vertexUV;
             }

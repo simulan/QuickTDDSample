@@ -11,7 +11,7 @@ namespace UMLProgram.Core.Render.NormalMap.programs {
             uniform vec3 light_color;
             uniform int light_power;
             uniform sampler2D myTextureSampler;
-            unformm sampler2D myNormalMap;
+            uniform sampler2D myNormalMap;
             uniform vec3 light_position_worldspace;
             in vec2 UV;
             in vec3 Position_worldspace;
@@ -21,8 +21,6 @@ namespace UMLProgram.Core.Render.NormalMap.programs {
             out vec3 color;
 
             void main(){
-                
-
                 vec3 n = normalize( texture( myNormalMap, vec2(UV.x,-UV.y) ).rgb*2.0 - 1.0 );
                 vec3 l = normalize( LightDirection_tangentspace );
                 vec3 E = normalize( EyeDirection_tangentspace );
